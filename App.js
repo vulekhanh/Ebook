@@ -1,10 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import SignIn from './Screens/SignIn';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SigningScreen from './Screens/SigningScreen';
 
 const App = () => {
-  return <SignIn />;
+  return <SigningScreen />;
 };
 
 export default App;
