@@ -1,12 +1,45 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import SignIn from './Screens/SignIn';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { createStackNavigator } from "@react-navigation/stack";
+import  {NavigationContainer, DefaultTheme } from '@react-navigation/native';
+
+import BookDetail from "./Screens/BookDetail";
+import Tabs from "./navigation/tabs";
+
+const theme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        border: "transparent"
+    }
+}
+
+const Stack = createStackNavigator();
 
 const App = () => {
-  return <SignIn />;
-};
+    return (
+      <NavigationContainer theme={theme}>
+      <Stack.Navigator
+          screenOptions={{
+              headerShown: false
+          }}        
+          initialRouteName={'Home'}
+      >
+          {/* Tabs */}
+          <Stack.Screen 
+          name="Home" 
+          component={Tabs} 
+          options={{ headerShown: false }}
+          />
+
+          {/* Screens */}
+          <Stack.Screen 
+          name="BookDetail" 
+          component={BookDetail} 
+          options={{ headerShown: false }} 
+          />
+      </Stack.Navigator>
+  </NavigationContainer>
+    )
+}
 
 export default App;
-
-const styles = StyleSheet.create({});
