@@ -6,6 +6,7 @@ import {
   TextInput,
   ImageBackground,
   Dimensions,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState} from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -20,17 +21,18 @@ const SigningScreen = () => {
     );
   };
   const buttonSection = () => {
+    let clickButtonStyle = [styles.buttonStyle, styles.focusButton];
     return (
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.buttonStyle}
+          style={isSignIn ? clickButtonStyle : styles.buttonStyle}
           onPress={() => {
             setIsSignIn(true);
           }}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.buttonStyle}
+          style={isSignIn ? styles.buttonStyle : clickButtonStyle}
           onPress={() => {
             setIsSignIn(false);
           }}>
@@ -158,6 +160,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 0.3,
     flexDirection: 'row',
+  },
+  focusButton: {
+    borderBottomColor: '#194689',
+    borderBottomWidth: 4,
   },
   signingContainer: {
     flex: 3,
