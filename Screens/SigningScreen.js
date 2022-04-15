@@ -5,44 +5,58 @@ import {
   View,
   TextInput,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
-import React from 'react';
-import Icon from 'react-native-vector-icons/AntDesign';
-import {Dimensions} from 'react-native';
-const header = () => {
-  return (
-    <View style={styles.titleContainer}>
-      <Text style={styles.title}>Welcome</Text>
-    </View>
-  );
-};
-const buttonSection = () => {
-  return (
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.buttonStyle}>
-        <Text style={styles.buttonText}>Sign In</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonStyle}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-const signInView = () => {
-  return (
-    <View style={styles.signingContainer}>
-      <ImageBackground
-        source={{
-          uri: 'https://tophinhanhdep.com/wp-content/uploads/2021/10/Blur-PC-Wallpapers.jpg',
-        }}
-        style={[styles.imageStyle, styles.signingContainer]}>
+import React, {useState} from 'react';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
+const SigningScreen = () => {
+  const [isSignIn, setIsSignIn] = useState(true);
+  const header = () => {
+    return (
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Welcome</Text>
+      </View>
+    );
+  };
+  const buttonSection = () => {
+    return (
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={() => {
+            setIsSignIn(true);
+          }}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={() => {
+            setIsSignIn(false);
+          }}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+  const signInView = () => {
+    return (
+      <View style={styles.signingContainer}>
         <View style={styles.emailContainer}>
-          <Icon name="user" style={styles.iconStyle} />
-          <TextInput style={styles.inputBoxStyle} placeholder="Email" />
+          <FontistoIcon name="email" style={styles.iconStyle} color="#FFFFFF" />
+          <TextInput
+            style={styles.inputBoxStyle}
+            placeholder="Email"
+            placeholderTextColor="#FFFFFF"
+          />
         </View>
         <View style={styles.passwordContainer}>
-          <Icon name="lock" style={styles.iconStyle} />
-          <TextInput style={styles.inputBoxStyle} placeholder="Password" />
+          <AntDesignIcon name="lock" style={styles.iconStyle} color="#FFFFFF" />
+          <TextInput
+            style={styles.inputBoxStyle}
+            placeholder="Password"
+            placeholderTextColor="#FFFFFF"
+          />
         </View>
         <TouchableOpacity style={styles.signingButtonStyle}>
           <Text style={styles.buttonText}>Sign In</Text>
@@ -50,16 +64,63 @@ const signInView = () => {
         <TouchableOpacity>
           <Text style={styles.passwordRetrieveButton}>Forgot password?</Text>
         </TouchableOpacity>
-      </ImageBackground>
-    </View>
-  );
-};
-const SigningScreen = () => {
+      </View>
+    );
+  };
+  const signUpView = () => {
+    return (
+      <View style={styles.signingContainer}>
+        <View style={styles.passwordContainer}>
+          <AntDesignIcon name="user" style={styles.iconStyle} color="#FFFFFF" />
+          <TextInput
+            style={styles.inputBoxStyle}
+            placeholder="Name"
+            placeholderTextColor="#FFFFFF"
+          />
+        </View>
+        <View style={styles.emailContainer}>
+          <FontistoIcon name="email" style={styles.iconStyle} color="#FFFFFF" />
+          <TextInput
+            style={styles.inputBoxStyle}
+            placeholder="Email"
+            placeholderTextColor="#FFFFFF"
+          />
+        </View>
+        <View style={styles.passwordContainer}>
+          <FontistoIcon name="email" style={styles.iconStyle} color="#FFFFFF" />
+          <TextInput
+            style={styles.inputBoxStyle}
+            placeholder="Password"
+            placeholderTextColor="#FFFFFF"
+          />
+        </View>
+        <View style={styles.passwordContainer}>
+          <AntDesignIcon name="lock" style={styles.iconStyle} color="#FFFFFF" />
+          <TextInput
+            style={styles.inputBoxStyle}
+            placeholder="Confirm password"
+            placeholderTextColor="#FFFFFF"
+          />
+        </View>
+        <TouchableOpacity style={styles.signingButtonStyle}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       {header()}
       {buttonSection()}
-      {signInView()}
+      <View style={styles.signingContainer}>
+        <ImageBackground
+          source={{
+            uri: 'https://tophinhanhdep.com/wp-content/uploads/2021/10/Blur-PC-Wallpapers.jpg',
+          }}
+          style={[styles.imageStyle, styles.signingContainer]}>
+          {isSignIn ? signInView() : signUpView()}
+        </ImageBackground>
+      </View>
     </View>
   );
 };
@@ -91,10 +152,8 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 1,
-    borderBottomColor: '#2464aa',
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottomWidth: 4,
   },
   buttonContainer: {
     flex: 0.3,
