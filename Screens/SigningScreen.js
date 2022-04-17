@@ -5,11 +5,14 @@ import {
   View,
   TextInput,
   ImageBackground,
+  ScrollView,
   Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+KeyboardAwareScrollView;
 const SigningScreen = ({navigation}) => {
   const [isSignIn, setIsSignIn] = useState(true);
   const header = () => {
@@ -72,43 +75,61 @@ const SigningScreen = ({navigation}) => {
   };
   const signUpView = () => {
     return (
-      <View style={styles.signingContainer}>
-        <View style={styles.passwordContainer}>
-          <AntDesignIcon name="user" style={styles.iconStyle} color="#FFFFFF" />
-          <TextInput
-            style={styles.inputBoxStyle}
-            placeholder="Name"
-            placeholderTextColor="#FFFFFF"
-          />
-        </View>
-        <View style={styles.emailContainer}>
-          <FontistoIcon name="email" style={styles.iconStyle} color="#FFFFFF" />
-          <TextInput
-            style={styles.inputBoxStyle}
-            placeholder="Email"
-            placeholderTextColor="#FFFFFF"
-          />
-        </View>
-        <View style={styles.passwordContainer}>
-          <FontistoIcon name="email" style={styles.iconStyle} color="#FFFFFF" />
-          <TextInput
-            style={styles.inputBoxStyle}
-            placeholder="Password"
-            placeholderTextColor="#FFFFFF"
-          />
-        </View>
-        <View style={styles.passwordContainer}>
-          <AntDesignIcon name="lock" style={styles.iconStyle} color="#FFFFFF" />
-          <TextInput
-            style={styles.inputBoxStyle}
-            placeholder="Confirm password"
-            placeholderTextColor="#FFFFFF"
-          />
-        </View>
-        <TouchableOpacity style={styles.signingButtonStyle}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
+      <KeyboardAwareScrollView>
+        <ScrollView contentContainerStyle={styles.signingContainer}>
+          <View style={styles.passwordContainer}>
+            <AntDesignIcon
+              name="user"
+              style={styles.iconStyle}
+              color="#FFFFFF"
+            />
+            <TextInput
+              style={styles.inputBoxStyle}
+              placeholder="Name"
+              placeholderTextColor="#FFFFFF"
+            />
+          </View>
+          <View style={styles.emailContainer}>
+            <FontistoIcon
+              name="email"
+              style={styles.iconStyle}
+              color="#FFFFFF"
+            />
+            <TextInput
+              style={styles.inputBoxStyle}
+              placeholder="Email"
+              placeholderTextColor="#FFFFFF"
+            />
+          </View>
+          <View style={styles.passwordContainer}>
+            <FontistoIcon
+              name="email"
+              style={styles.iconStyle}
+              color="#FFFFFF"
+            />
+            <TextInput
+              style={styles.inputBoxStyle}
+              placeholder="Password"
+              placeholderTextColor="#FFFFFF"
+            />
+          </View>
+          <View style={styles.passwordContainer}>
+            <AntDesignIcon
+              name="lock"
+              style={styles.iconStyle}
+              color="#FFFFFF"
+            />
+            <TextInput
+              style={styles.inputBoxStyle}
+              placeholder="Confirm password"
+              placeholderTextColor="#FFFFFF"
+            />
+          </View>
+          <TouchableOpacity style={styles.signingButtonStyle}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAwareScrollView>
     );
   };
   return (
