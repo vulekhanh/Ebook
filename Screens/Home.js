@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   FlatList,
+  StatusBar,
 } from 'react-native';
 
 import {COLORS, FONTS, SIZES, icons, images} from '../constants';

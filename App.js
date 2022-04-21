@@ -4,6 +4,7 @@ import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import BookDetail from './Screens/BookDetail';
 import Tabs from './navigation/tabs';
 import SigningScreen from './Screens/SigningScreen';
+import {StatusBar} from 'react-native';
 
 const theme = {
   ...DefaultTheme,
@@ -19,28 +20,14 @@ const App = () => {
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName={'SigningScreen'}>
+        initialRouteName={'SigningScreen'}
+        screenOptions={{headerShown: false}}>
         {/* Tabs */}
-        <Stack.Screen
-          name="SigningScreen"
-          component={SigningScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Tabs}
-          options={{headerShown: false}}
-        />
+        <Stack.Screen name="SigningScreen" component={SigningScreen} />
+        <Stack.Screen name="Home" component={Tabs} />
 
         {/* Screens */}
-        <Stack.Screen
-          name="BookDetail"
-          component={BookDetail}
-          options={{headerShown: false}}
-        />
+        <Stack.Screen name="BookDetail" component={BookDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
