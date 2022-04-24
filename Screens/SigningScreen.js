@@ -68,7 +68,7 @@ const SigningScreen = ({navigation}) => {
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={styles.passwordRetrieveButton}>Forgot password?</Text>
+          <Text style={styles.buttonText}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
     );
@@ -139,7 +139,7 @@ const SigningScreen = ({navigation}) => {
       <View style={styles.signingContainer}>
         <ImageBackground
           source={{
-            uri: 'https://tophinhanhdep.com/wp-content/uploads/2021/10/Blur-PC-Wallpapers.jpg',
+            uri: 'http://papers.co/wallpaper/papers.co-sg90-dark-color-inside-gradation-blur-34-iphone6-plus-wallpaper.jpg',
           }}
           style={[styles.imageStyle, styles.signingContainer]}>
           {isSignIn ? signInView() : signUpView()}
@@ -159,18 +159,18 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
-    backgroundColor: '#2464aa',
-    width: Dimensions.get('window').width,
+    backgroundColor: '#151936',
     justifyContent: 'center',
+    width: '100%',
   },
   title: {
     fontSize: 50,
-    color: '#f6f5f9',
+    color: '#FFFFFF',
     textAlign: 'center',
   },
   buttonText: {
     fontSize: 18,
-    color: '#2464aa',
+    color: '#FFFFFF',
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -178,13 +178,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#151936',
+    borderColor: '#FFFFFF',
+    borderTopWidth: 1,
   },
   buttonContainer: {
     flex: 0.3,
     flexDirection: 'row',
   },
   focusButton: {
-    borderBottomColor: '#194689',
+    borderBottomColor: '#FFFFFF',
     borderBottomWidth: 4,
   },
   signingContainer: {
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
   },
   inputBoxStyle: {
-    borderBottomColor: '#e5ecef',
+    borderBottomColor: '#FFFFFF',
     borderBottomWidth: 1,
     width: '90%',
     height: 40,
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     fontSize: 30,
-    borderBottomColor: '#e5ecef',
+    borderBottomColor: '#FFFFFF',
     borderBottomWidth: 1,
   },
   signingButtonStyle: {
@@ -224,10 +227,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: '#e5ecef',
-  },
-  passwordRetrieveButton: {
-    color: '#e5ecef',
-    fontSize: 18,
+    borderColor: '#FFFFFF',
   },
 });
