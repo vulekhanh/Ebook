@@ -4,6 +4,7 @@ import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import BookDetail from './Screens/BookDetail';
 import Tabs from './navigation/tabs';
 import SigningScreen from './Screens/SigningScreen';
+import AccountSettingScreen from './Screens/Account';
 import {StatusBar} from 'react-native';
 
 const theme = {

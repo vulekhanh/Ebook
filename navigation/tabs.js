@@ -2,6 +2,7 @@ import React from 'react';
 import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home} from '../Screens/';
+import AccountSettingScreen from '../Screens/Account';
 import {icons, COLORS} from '../constants';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
@@ -107,7 +108,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="Setting"
-        component={Home}
+        component={AccountSettingScreen}
         options={{headerShown: false}}
       />
     </Tab.Navigator>
