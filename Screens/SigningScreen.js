@@ -46,7 +46,7 @@ const SigningScreen = ({navigation}) => {
   const signInView = () => {
     return (
       <View style={styles.signingContainer}>
-        <View style={styles.emailContainer}>
+        <View style={styles.inputContainer}>
           <FontistoIcon name="email" style={styles.iconStyle} color="#FFFFFF" />
           <TextInput
             style={styles.inputBoxStyle}
@@ -54,7 +54,7 @@ const SigningScreen = ({navigation}) => {
             placeholderTextColor="#FFFFFF"
           />
         </View>
-        <View style={styles.passwordContainer}>
+        <View style={styles.inputContainer}>
           <AntDesignIcon name="lock" style={styles.iconStyle} color="#FFFFFF" />
           <TextInput
             style={styles.inputBoxStyle}
@@ -77,7 +77,7 @@ const SigningScreen = ({navigation}) => {
     return (
       <KeyboardAwareScrollView>
         <ScrollView contentContainerStyle={styles.signingContainer}>
-          <View style={styles.passwordContainer}>
+          <View style={styles.inputContainer}>
             <AntDesignIcon
               name="user"
               style={styles.iconStyle}
@@ -89,7 +89,7 @@ const SigningScreen = ({navigation}) => {
               placeholderTextColor="#FFFFFF"
             />
           </View>
-          <View style={styles.emailContainer}>
+          <View style={styles.inputContainer}>
             <FontistoIcon
               name="email"
               style={styles.iconStyle}
@@ -101,7 +101,7 @@ const SigningScreen = ({navigation}) => {
               placeholderTextColor="#FFFFFF"
             />
           </View>
-          <View style={styles.passwordContainer}>
+          <View style={styles.inputContainer}>
             <FontistoIcon
               name="email"
               style={styles.iconStyle}
@@ -113,7 +113,7 @@ const SigningScreen = ({navigation}) => {
               placeholderTextColor="#FFFFFF"
             />
           </View>
-          <View style={styles.passwordContainer}>
+          <View style={styles.inputContainer}>
             <AntDesignIcon
               name="lock"
               style={styles.iconStyle}
@@ -205,11 +205,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 40,
   },
-  emailContainer: {
-    flexDirection: 'row',
-    padding: 30,
-  },
-  passwordContainer: {
+  inputContainer: {
     flexDirection: 'row',
     padding: 30,
   },
