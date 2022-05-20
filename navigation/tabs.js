@@ -5,6 +5,7 @@ import {Home} from '../Screens/';
 import AccountSettingScreen from '../Screens/Account';
 import {icons, COLORS} from '../constants';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import AccountList from '../Screens/AccountList';
 
 const Tab = createBottomTabNavigator();
 
@@ -67,7 +68,7 @@ const Tabs = () => {
                 />
               );
 
-            case 'Notification':
+            case 'AccountList':
               return (
                 <Image
                   source={icons.notification_icon}
@@ -102,8 +103,8 @@ const Tabs = () => {
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Notification"
-        component={Home}
+        name="AccountList"
+        component={AccountList}
         options={{headerShown: false}}
       />
       <Tab.Screen
