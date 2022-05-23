@@ -8,7 +8,7 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-
+import { useNavigation } from '@react-navigation/core';
 import {COLORS, FONTS, SIZES, icons, images} from '../constants';
 
 const LineDivider = () => {
@@ -24,6 +24,7 @@ const LineDivider = () => {
   );
 };
 
+const navigation = useNavigation();
 const Home = ({navigation}) => {
   const profileData = {
     name: 'Username',
@@ -236,7 +237,7 @@ const Home = ({navigation}) => {
           {/* Get Point */}
           <TouchableOpacity
             style={{flex: 1}}
-            onPress={() => console.log('Get Point')}>
+            onPress={() => navigation.navigate('BookmarkedScreen')}>
             <View
               style={{
                 flex: 1,
@@ -583,7 +584,7 @@ const Home = ({navigation}) => {
               style={{
                 width: 25,
                 height: 25,
-                tintColor: COLORS.lightGray,
+                tintColor: COLORS.primary,
               }}
             />
           </TouchableOpacity>

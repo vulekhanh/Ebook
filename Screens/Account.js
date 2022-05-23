@@ -6,11 +6,16 @@
     ScrollView,
     TouchableOpacity,
     Image,
+    Dimensions,
   } from 'react-native';
   import CardInformation from '../custom component/CardInformation';
   import ButtonUser from '../custom component/ButtonUser';
   import { useNavigation } from '@react-navigation/core';
+  import { COLORS } from '../constants';
   
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
+
   const AccountSettingScreen = () => {
     const navigation = useNavigation();
   
@@ -19,14 +24,16 @@
         <View style={styles.container}>
           {/* Header  */}
           <View style={styles.containerHeader}>
-            <Text style={styles.textHeader}>Personal details</Text>
-            <TouchableOpacity style={styles.btnEdit}>
+            <Text style={{style: styles.textHeader, color: COLORS.white, fontSize: 25, fontWeight:'bold'}}>Personal details</Text>
+
+            {/*<TouchableOpacity style={styles.btnEdit}>
               
               <Image
                 source={{uri: 'https://icones.pro/wp-content/uploads/2021/05/icone-de-panier-orange.png'}}
                 style={{ height: 30, width: 30, marginHorizontal: 5 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
+
             {/* Info Wallet, Bookmarks Section */}
             <View>
 
@@ -40,11 +47,11 @@
                 address="Ho Chi Minh City"
                 phone="18081508"
               />
+              <ButtonUser name="Your Favorite" />
               <ButtonUser name="Your Order" />
               <ButtonUser name="Edit Information" />
-              <ButtonUser name="Notifications" />
-              <ButtonUser name="My Preferences" />
-              <ButtonUser name="Help" />
+              {/*<ButtonUser name="My Preferences" />*/}
+              <ButtonUser name="About Us" />
               <View
                 style={{
                   
@@ -53,11 +60,6 @@
                 }}
               >
                 <TouchableOpacity style={{flexDirection: 'row'}}>
-                    <Image
-                        source={{uri: 'http://cdn.onlinewebfonts.com/svg/img_151567.png'}}
-                        style={{ height: 20, width: 20, alignSelf: 'center' }}
-                    />
-                    <Text style={{marginLeft: 5,}}>About</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.buttonContainer}>
@@ -69,19 +71,19 @@
                 >
                   <Image
                     source={{uri: 'http://cdn.onlinewebfonts.com/svg/img_446456.png'}}
-                    style={{ height: 15, width: 15, marginHorizontal: 10 }}
+                    style={{ height: 20, width: 20, marginHorizontal: 10, tintColor: COLORS.white }}
                   />
                   <Text style={styles.buttonText1}>Setting</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('Login');
+                    navigation.navigate('SigningScreen');
                   }}
                   style={styles.button2}
                 >
                   <Image
                     source={{uri: 'https://cdn4.iconfinder.com/data/icons/universal-icons/120/vector_288_20-512.png'}}
-                    style={{ height: 15, width: 15, marginHorizontal: 10 }}
+                    style={{ height: 20, width: 20, marginHorizontal: 10, tintColor: COLORS.primary }}
                   />
                   <Text style={styles.buttonText2}>Log out</Text>
                 </TouchableOpacity>
@@ -97,15 +99,17 @@
   
   const styles = StyleSheet.create({
     container: {
-      paddingVertical: 20,
+      backgroundColor : COLORS.black,
+      paddingVertical: 77,
       paddingHorizontal: 10,
       flex: 1,
+      //height: windowHeight,
     },
     containerHeader: {
       flexDirection: 'column',
       padding: 10,
     },
-    btnEdit: {
+    /*btnEdit: {
       width: 50,
       height: 50,
       borderRadius: 25,
@@ -114,7 +118,7 @@
       alignItems: 'center',
       justifyContent: 'center',
       top: 0,
-    },
+    },*/
     textHeader: {
       position: 'absolute',
       width: 147,
@@ -199,18 +203,18 @@
       flexDirection: 'row',
     },
     buttonText1: {
-      color: '#000000',
+      color: COLORS.white,
       fontWeight: '700',
       fontSize: 16,
     },
     buttonText2: {
-      color: '#FA4A0C',
+      color: COLORS.primary,
       fontWeight: '700',
       fontSize: 16,
     },
     button1: {
-      backgroundColor: '#FA4A0C',
-      width: '50%',
+      backgroundColor: COLORS.primary,
+      width: '48%',
       padding: 15,
       borderRadius: 15,
       justifyContent: 'center',
@@ -221,7 +225,7 @@
     },
     button2: {
       backgroundColor: 'white',
-      width: '50%',
+      width: '48%',
       padding: 15,
       borderRadius: 15,
       justifyContent: 'center',
