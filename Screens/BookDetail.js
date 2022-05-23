@@ -290,8 +290,8 @@ const BookDetail = ({route, navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          onPress={() => console.log('Start Reading')}>
-          <Text style={{...FONTS.h3, color: COLORS.white}}>Start Reading</Text>
+          onPress={() => console.log('Borrow')}>
+          <Text style={{...FONTS.h3, color: COLORS.white}}>Borrow Book</Text>
         </TouchableOpacity>
       </View>
     );

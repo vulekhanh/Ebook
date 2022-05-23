@@ -9,8 +9,8 @@ import {
     KeyboardAvoidingView,
     Keyboard
 } from 'react-native'
-import { colors,theme } from '../constants';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+//import { colors,theme } from '../constants';
+//import Icon from 'react-native-vector-icons/FontAwesome5';
 
 function _getColorFromStatus(status) {
     /*

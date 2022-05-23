@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,7 +8,7 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
+//import { useNavigation } from '@react-navigation/core';
 import {COLORS, FONTS, SIZES, icons, images} from '../constants';
 
 const LineDivider = () => {
@@ -24,7 +24,7 @@ const LineDivider = () => {
   );
 };
 
-const navigation = useNavigation();
+//const navigation = useNavigation();
 const Home = ({navigation}) => {
   const profileData = {
     name: 'Username',
@@ -115,10 +115,10 @@ const Home = ({navigation}) => {
     },
   ];
 
-  const [profile, setProfile] = React.useState(profileData);
-  const [myBooks, setMyBooks] = React.useState(myBooksData);
-  const [categories, setCategories] = React.useState(categoriesData);
-  const [selectedCategory, setSelectedCategory] = React.useState(1);
+  const [profile, setProfile] = useState(profileData);
+  const [myBooks, setMyBooks] = useState(myBooksData);
+  const [categories, setCategories] = useState(categoriesData);
+  const [selectedCategory, setSelectedCategory] = useState(1);
 
   function renderHeader(profile) {
     return (
@@ -132,7 +132,7 @@ const Home = ({navigation}) => {
         {/* Greetings */}
         <View style={{flex: 1}}>
           <View style={{marginRight: SIZES.padding}}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>Good Morning</Text>
+            <Text style={{...FONTS.h3, color: COLORS.white}}>Hello there,</Text>
             <Text style={{...FONTS.h2, color: COLORS.white}}>
               {profile.name}
             </Text>
@@ -226,7 +226,7 @@ const Home = ({navigation}) => {
                   ...FONTS.body3,
                   color: COLORS.white,
                 }}>
-                Claim
+                Borrowed
               </Text>
             </View>
           </TouchableOpacity>
@@ -259,16 +259,16 @@ const Home = ({navigation}) => {
                   ...FONTS.body3,
                   color: COLORS.white,
                 }}>
-                Get Point
+                Bookmarked
               </Text>
             </View>
           </TouchableOpacity>
 
           {/* Divider */}
-          <LineDivider />
+          {/* <LineDivider /> */}
 
           {/* My Card */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{flex: 1}}
             onPress={() => console.log('My Card')}>
             <View
@@ -295,7 +295,7 @@ const Home = ({navigation}) => {
                 My Card
               </Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     );
@@ -327,7 +327,7 @@ const Home = ({navigation}) => {
           />
 
           {/* Book Info */}
-          <View
+          {/* <View
             style={{
               marginTop: SIZES.radius,
               flexDirection: 'row',
@@ -359,7 +359,7 @@ const Home = ({navigation}) => {
               style={{marginLeft: 5, ...FONTS.body3, color: COLORS.lightGray}}>
               {item.completion}
             </Text>
-          </View>
+          </View> */}
         </TouchableOpacity>
       );
     };
@@ -373,7 +373,7 @@ const Home = ({navigation}) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.h2, color: COLORS.white}}>My Book</Text>
+          <Text style={{...FONTS.h2, color: COLORS.white}}>Book Feature</Text>
 
           <TouchableOpacity onPress={() => console.log('See More')}>
             <Text
