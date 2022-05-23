@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import vector from '../assets/icons/Vector.png'
 import { useNavigation } from '@react-navigation/core'
-
+import { COLORS } from '../constants';
 
 const ButtonUser = ({name}) => {
     const navigation = useNavigation()
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
         
     },
     TouchableOpacity:{
-      backgroundColor:'white',
-      width:350,
+      backgroundColor: COLORS.lightGray2,
+      width:330,
       height:50,
       marginTop:20,
       borderRadius:20,

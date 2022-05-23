@@ -7,7 +7,8 @@ import {
     Image,
   } from "react-native";
   import React from "react";
-  
+  import { COLORS } from '../constants';
+
   const CardInformation = ({ name, mail, phone, address, imageSource }) => {
     return (
       <View style={styles.card}>
@@ -36,7 +37,7 @@ import {
       marginHorizontal: 15,
       marginTop: 10,
       borderRadius: 20,
-      backgroundColor: "white",
+      backgroundColor: COLORS.lightGray2,
       alignSelf: "center",
       shadowColor: "#000",
       shadowOffset: {
@@ -65,7 +66,7 @@ import {
       maxWidth: 160,
     },
     textName: {
-      fontWeight: "400",
+      fontWeight:'bold',
       fontSize: 18,
       lineHeight: 27,
     },

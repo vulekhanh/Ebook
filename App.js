@@ -5,6 +5,7 @@ import BookDetail from './Screens/BookDetail';
 import Tabs from './navigation/tabs';
 import SigningScreen from './Screens/SigningScreen';
 import AccountSettingScreen from './Screens/Account';
+import BookmarkedScreen from './Screens/Bookmarked';
 import {StatusBar} from 'react-native';
 
 const theme = {
@@ -29,6 +30,7 @@ const App = () => {
 
         {/* Screens */}
         <Stack.Screen name="BookDetail" component={BookDetail} />
+        <Stack.Screen name="BookmarkedScreen" component={BookmarkedScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
