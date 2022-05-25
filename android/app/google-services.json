@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "940891977232",
+    "project_id": "libraryapp-c2dfa",
+    "storage_bucket": "libraryapp-c2dfa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940891977232:android:a79f52b2fd6cfe8f857c95",
+        "android_client_info": {
+          "package_name": "com.ebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940891977232-qmqa4dqjg3e9aed5bj0ec7smetigj733.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc_R5NNPB0Mh6IX8XcwNMoU8hEPe5IV5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940891977232-qmqa4dqjg3e9aed5bj0ec7smetigj733.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
