@@ -155,36 +155,32 @@ export class FirebaseManager extends Component {
     };
     //#endregion
     
-    //#region upload and get file firebase
-    // Lấy data với query return List data
+    //#region Data method
+    //PS: Query is a array EX: query =  ["day", "==", "10/06/2002"]
+    // GetData from database
     async getData(collection, query?) {
         let temp = []
-        const data = await firestore()
-            .collection(collection)
-            // Filter results
-            .where('userName', '==', this.userName)
-            .where(field, operators, value)
-            .get()
-        data.forEach(doc => {
-            temp.push(doc.data())
-        })
+        if (query){
+            const data = await firestore()
+                .collection(collection)
+                .where(query[0], query[1], query[2])
+                .get()
+            data.forEach(doc => {
+                temp.push(doc.data())
+            })
+        }
+        else{
+            const data = await firestore()
+                .collection(collection)
+                .get()
+            data.forEach(doc => {
+                temp.push(doc.data())
+            })
+        }
         return temp;
     }
-    // Lấy data với collection
-    async getDataWithCollection(collection) {
-        let temp = []
-        const data = await firestore()
-            .collection(collection)
-            .where('userName', '==', this.userName)
-            .get()
-        data.forEach(doc => {
-            temp.push(doc.data())
-        })
-        return temp;
-    }
-    // Thêm dữ liệu lên database với document ngẫu nhiên
-    async AddDataRandomDoc(collection, data) {
-        data.userName = this.userName;
+    // Push data to database
+    async pushData(collection, data) {
         await firestore()
             .collection(collection)
             .add(data)
@@ -192,49 +188,45 @@ export class FirebaseManager extends Component {
                 console.log('User added!');
             });
     }
-    // Cập nhập dữ liệu lên database
-    // Query là 1 mảng (có thể có hoặc ko) VD: ["name", "==", "Firebase"]
-    async UpdateData(collection, data, query?) {
-        data.userName = this.userName;
+    // UpdateData
+    async UpdateData(collection, data, query) {
         const db = await firestore().collection(collection);
         var docID = "";
-        if (query) {
-            await db
-                .where("userName", '==', this.userName)
-                .where(query[0], query[1], query[2])
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        docID = doc.id;
-                    });
-                })
-        }
-        else {
-            await db
-                .where("userName", '==', this.userName)
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        docID = doc.id;
-                    });
-                })
-        }
+        await db
+            .where(query[0], query[1], query[2])
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    docID = doc.id;
+                });
+            })
         await db.doc(docID)
             .update(data)
             .then(() => {
                 console.log('User updated!');
             });
     }
-    // Xóa dữ liệu database 
-    RemoveData(collection, document) {
-        firestore()
+    // Remove data 
+    async RemoveData(collection, query) {
+        var docID = "";
+        await firestore().collection(collection)
+            .where(query[0], query[1], query[2])
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    docID = doc.id;
+                });
+            })
+        await firestore()
             .collection(collection)
-            .doc(document)
+            .doc(docID)
             .delete()
             .then(() => {
                 console.log('User deleted!');
             });
     }
+    //#endregion
+    //#region Image method
     async getImage(collection, imageName){
         const file = this.userName + '/' + collection + '/' + imageName + ".png";
         const url = await storage().ref(file).getDownloadURL();
