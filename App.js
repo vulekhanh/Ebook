@@ -7,7 +7,7 @@ import SigningScreen from './Screens/SigningScreen';
 import AccountSettingScreen from './Screens/Account';
 import BookmarkedScreen from './Screens/Bookmarked';
 import {StatusBar} from 'react-native';
-
+import Test from './Screens/test';
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -25,6 +25,7 @@ const App = () => {
         initialRouteName={'SigningScreen'}
         screenOptions={{headerShown: false}}>
         {/* Tabs */}
+        {/* <Stack.Screen name="testScreen" component={ Test}/> */}
         <Stack.Screen name="SigningScreen" component={SigningScreen} />
         <Stack.Screen name="Home" component={Tabs} />
         <Stack.Screen name='AccountList' component={Tabs} />
