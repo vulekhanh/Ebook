@@ -10,9 +10,12 @@
   } from 'react-native';
   import CardInformation from '../custom component/CardInformation';
   import ButtonUser from '../custom component/ButtonUser';
+  import ButtonUser1 from '../custom component/ButtonUser1';
+  import ButtonUser2 from '../custom component/ButtonUser2';
+  import ButtonUser3 from '../custom component/ButtonUser3';
   import { useNavigation } from '@react-navigation/core';
   import { COLORS } from '../constants';
-import { FirebaseManager } from './FirebaseManager';
+  import { FirebaseManager } from './FirebaseManager';
   
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -49,10 +52,10 @@ import { FirebaseManager } from './FirebaseManager';
                 phone="18081508"
               />
               <ButtonUser name="Your Favorite" />
-              <ButtonUser name="Your Order" />
-              <ButtonUser name="Edit Information" />
+              <ButtonUser1 name="Your Order" />
+              <ButtonUser2 name="Edit Information" />
               {/*<ButtonUser name="My Preferences" />*/}
-              <ButtonUser name="About Us" />
+              <ButtonUser3 name="About Us" />
               <View
                 style={{
                   
@@ -66,7 +69,7 @@ import { FirebaseManager } from './FirebaseManager';
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('');
+                    navigation.navigate('EditAccountScreen');
                   }}
                   style={styles.button1}
                 >

@@ -4,13 +4,13 @@ import vector from '../assets/icons/Vector.png'
 import { useNavigation } from '@react-navigation/core'
 import { COLORS } from '../constants';
 
-const ButtonUser = ({name}) => {
+const ButtonUser2 = ({name}) => {
     const navigation = useNavigation()
     
   return (
       
     <View style={styles.container}>
-    <TouchableOpacity style={styles.TouchableOpacity} onPress={() => navigation.navigate('')}>
+    <TouchableOpacity style={styles.TouchableOpacity} onPress={() => navigation.navigate('EditAccountScreen')}>
       </TouchableOpacity>
       {name && <Text style={styles.textName}>{name}</Text>}
       <Image style={styles.icon} source={vector}/>
@@ -19,7 +19,7 @@ const ButtonUser = ({name}) => {
   )
 }
 
-export default ButtonUser
+export default ButtonUser2
 
 const styles = StyleSheet.create({
     container:{
