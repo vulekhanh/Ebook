@@ -30,8 +30,7 @@ function _getColorFromStatus(status) {
 function AccountItem(props) {
     let { 
         name, 
-        id, 
-        socialNetworks, 
+        phoneNumber,  
         status, 
         url, 
         website,         
@@ -85,15 +84,16 @@ function AccountItem(props) {
             <Text style={{
                     color: 'white',
                     fontSize: 13,
-            }}>Id: {id} </Text>
+            }}>Email: {website}</Text>
+            {/* <Text style={{
+                    color: 'white',
+                    fontSize: 13,
+            }}>Gender: {gender} </Text> */}
             <Text style={{
                     color: 'white',
                     fontSize: 13,
-            }}>So sach dang muon: 3 </Text>
-            <Text style={{
-                    color: 'white',
-                    fontSize: 13,
-            }}>Gmail: {website}</Text>
+            }}>Phone : {phoneNumber} </Text>
+            
             {/* <View style={{
                 flexDirection: 'row'
             }}>

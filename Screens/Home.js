@@ -61,7 +61,7 @@ const Home = ({ navigation }) => {
   const categoriesData = [
     {
       id: 1,
-      categoryName: 'Best Seller',
+      categoryName: 'Best Book',
       books: [],
     },
     {
@@ -148,7 +148,12 @@ const Home = ({ navigation }) => {
               </Text>
             </View>
           </TouchableOpacity>
-          : null}
+          : <View>
+          <Image
+            source={require("../assets/icons/books.png")}
+            style={{height:70,width:70}}
+          />
+        </View>}
       </View>
     );
   }
@@ -270,7 +275,7 @@ const Home = ({ navigation }) => {
           }}>
           <Text style={{ ...FONTS.h2, color: COLORS.white }}>Book Feature</Text>
 
-          <TouchableOpacity onPress={() => console.log('See More')}>
+          {/* <TouchableOpacity onPress={() => console.log('See More')}>
             <Text
               style={{
                 ...FONTS.body3,
@@ -280,7 +285,7 @@ const Home = ({ navigation }) => {
               }}>
               see more
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* Books */}

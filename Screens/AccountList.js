@@ -19,7 +19,6 @@ import { FirebaseManager } from './FirebaseManager';
  - FlatList
  */
 function AccountList(props) {
-    //list of foods = state
     const manager = new FirebaseManager();
     const [isAdmin, setIsAdmin] = useState(false);
     const [data, setData] = useState([
@@ -27,71 +26,47 @@ function AccountList(props) {
             name: 'Nguyen Van A',
             url: 'https://i.pravatar.cc/300',
             status: 'Borrowing',
-            id: 123,
-            // price: 5223.56,
             website: 'https://edition.cnn.com',
-            socialNetworks: {
-                facebook: 'https://www.facebook.com/duyvu91',
-                twitter: 'https://twitter.com/LostInBrittany',
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
+            phoneNumber: '0983652844',
+            
         },
         {
             name: 'Nguyen Van B',
             url: 'https://i.pravatar.cc/301',
             status: 'Borrowing',
-            //price: 1124.56,
-            id: 234,
+            
             website: 'https://huands.abc.com',
-            socialNetworks: {
-                twitter: 'https://twitter.com/LostInBrittany',
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
+            phoneNumber: '0983652844',
+            
         },
         {
             name: 'Nguyen Van C',
             url: 'https://i.pravatar.cc/307',
             status: 'Borrowing',
-            price: 1124.56,
-            id: 345,
             website: 'https://huands.abc.com',
-            socialNetworks: {
-                twitter: 'https://twitter.com/LostInBrittany',
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
+            phoneNumber: '0983652844',
         },
         {
             name: 'Nguyen Van D',
             url: 'https://i.pravatar.cc/323',
             status: 'Not Borrow',
-            //price: 2342.56,
-            id: 456,
             website: 'https://www.uiuds.com',
-            socialNetworks: {
-                facebook: 'https://www.facebook.com/duyvu91',
-            }
+            phoneNumber: '0983652844',
         },
         {
             name: 'Nguyen Van E',
             url: 'https://i.pravatar.cc/304',
             status: 'Giveback late',
-            //price: 2354.56,
-            id: 456,
             website: 'https://edition.sabc.com',
-            socialNetworks: {
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
+            phoneNumber: '0983652844',
         },
         {
             name: 'Abc xyz',
             url: 'https://i.pravatar.cc/305',
             status: 'Giveback late',
-            //price: 5568.11,
-            id: 456,
+            
             website: 'https://www.food.com/',
-            socialNetworks: {
-                instagram: 'https://www.instagram.com/aeisinger/'
-            }
+            phoneNumber: '0983652844',
         }
     ])
     //const [data, setData] = useState([])
