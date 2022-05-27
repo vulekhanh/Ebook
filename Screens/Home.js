@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,12 +10,12 @@ import {
   RefreshControl
 } from 'react-native';
 //import { useNavigation } from '@react-navigation/core';
-import {COLORS, FONTS, SIZES, icons, images} from '../constants';
+import { COLORS, FONTS, SIZES, icons, images } from '../constants';
 import { FirebaseManager } from './FirebaseManager';
 
 const LineDivider = () => {
   return (
-    <View style={{width: 1, paddingVertical: 18}}>
+    <View style={{ width: 1, paddingVertical: 18 }}>
       <View
         style={{
           flex: 1,
@@ -27,20 +27,28 @@ const LineDivider = () => {
 };
 
 //const navigation = useNavigation();
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   const manager = new FirebaseManager();
-  const profileData = {
-    name: 'Username',
-    point: 200,
-  };
-  useEffect(LoadData,[]);
-  async function LoadData(){
+  const [dataUser, setDataUser] = useState(manager.dataAccount);
+  const [isAdmin, setisAdmin] = useState(false);
+  const [profileData, setProfileData] = useState("Username");
+  useEffect(LoadData, []);
+  async function LoadData() {
+    //get data books
     const dataBook = await manager.getData("Books");
-    await dataBook.sort((a,b)=> a.id - b.id);
+    await dataBook.sort((a, b) => a.id - b.id);
     setMyBooks(dataBook);
+    //get data user
+    var query = ["email", "==", manager.userName]
+    const temp = await manager.getData("Account", query)
+    temp.forEach(value => {
+      setProfile(value.name);
+      setisAdmin(value.isAdmin);
+    })
+    //Get data categories
     const dataCategories = await manager.getData("CategoriesBook");
     var i = 0;
-    await dataCategories.sort((a,b)=>a.id - b.id);
+    await dataCategories.sort((a, b) => a.id - b.id);
     dataCategories.forEach(value => {
       value.books.forEach(items => {
         categories[i].books.push(dataBook[items - 1]);
@@ -67,7 +75,7 @@ const Home = ({navigation}) => {
       books: [],
     },
   ];
-  const [isRender,setIsRender] = useState(false);
+  const [isRender, setIsRender] = useState(false);
   const [profile, setProfile] = useState(profileData);
   const [myBooks, setMyBooks] = useState([]);
   const [categories, setCategories] = useState(categoriesData);
@@ -82,70 +90,72 @@ const Home = ({navigation}) => {
           alignItems: 'center',
         }}>
         {/* Greetings */}
-        <View style={{flex: 1}}>
-          <View style={{marginRight: SIZES.padding}}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>Hello there,</Text>
-            <Text style={{...FONTS.h2, color: COLORS.white}}>
-              {profile.name}
+        <View style={{ flex: 1 }}>
+          <View style={{ marginRight: SIZES.padding }}>
+            <Text style={{ ...FONTS.h3, color: COLORS.white }}>Hello there,</Text>
+            <Text style={{ ...FONTS.h2, color: COLORS.white }}>
+              {profile}
             </Text>
           </View>
         </View>
 
         {/* Points */}
-        <TouchableOpacity
-          style={{
-            backgroundColor: COLORS.primary,
-            height: 40,
-            paddingLeft: 3,
-            paddingRight: SIZES.radius,
-            borderRadius: 20,
-          }}
-          onPress={() => {
-            navigation.navigate("AddBooks")
-          }}>
-          <View
+        {isAdmin ?
+          <TouchableOpacity
             style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
+              backgroundColor: COLORS.primary,
+              height: 40,
+              paddingLeft: 3,
+              paddingRight: SIZES.radius,
+              borderRadius: 20,
+            }}
+            onPress={() => {
+              navigation.navigate("AddBooks")
             }}>
             <View
               style={{
-                width: 30,
-                height: 30,
-                alignItems: 'center',
+                flex: 1,
+                flexDirection: 'row',
                 justifyContent: 'center',
-                borderRadius: 25,
-                backgroundColor: 'rgba(0,0,0,0.5)',
+                alignItems: 'center',
               }}>
-              <Image
-                source={icons.plus_icon}
-                resizeMode="contain"
+              <View
                 style={{
-                  width: 20,
-                  height: 20,
-                }}
-              />
-            </View>
+                  width: 30,
+                  height: 30,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 25,
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                }}>
+                <Image
+                  source={icons.plus_icon}
+                  resizeMode="contain"
+                  style={{
+                    width: 20,
+                    height: 20,
+                  }}
+                />
+              </View>
 
-            <Text
-              style={{
-                marginLeft: SIZES.base,
-                color: COLORS.white,
-                ...FONTS.body3,
-              }}>
-              {profile.point} point
-            </Text>
-          </View>
-        </TouchableOpacity>
+              <Text
+                style={{
+                  marginLeft: SIZES.base,
+                  color: COLORS.white,
+                  ...FONTS.body3,
+                }}>
+                Add Books
+              </Text>
+            </View>
+          </TouchableOpacity>
+          : null}
       </View>
     );
   }
 
   function renderButtonSection() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', padding: SIZES.padding}}>
+      <View style={{ flex: 1, justifyContent: 'center', padding: SIZES.padding }}>
         <View
           style={{
             flexDirection: 'row',
@@ -155,7 +165,7 @@ const Home = ({navigation}) => {
           }}>
           {/* Claim */}
           <TouchableOpacity
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             onPress={() => console.log('Claim')}>
             <View
               style={{
@@ -188,7 +198,7 @@ const Home = ({navigation}) => {
 
           {/* Get Point */}
           <TouchableOpacity
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             onPress={() => navigation.navigate('BookmarkedScreen')}>
             <View
               style={{
@@ -221,7 +231,7 @@ const Home = ({navigation}) => {
   }
 
   function renderMyBookSection(myBooks) {
-    const renderItem = ({item, index}) => {
+    const renderItem = ({ item, index }) => {
       return (
         <TouchableOpacity
           style={{
@@ -237,7 +247,7 @@ const Home = ({navigation}) => {
           {/* Book Cover */}
           <Image
             //source={item.bookCover}
-            source={{uri : item.bookCover}}
+            source={{ uri: item.bookCover }}
             resizeMode="cover"
             style={{
               width: 150,
@@ -250,7 +260,7 @@ const Home = ({navigation}) => {
     };
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         {/* Header */}
         <View
           style={{
@@ -258,7 +268,7 @@ const Home = ({navigation}) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <Text style={{...FONTS.h2, color: COLORS.white}}>Book Feature</Text>
+          <Text style={{ ...FONTS.h2, color: COLORS.white }}>Book Feature</Text>
 
           <TouchableOpacity onPress={() => console.log('See More')}>
             <Text
@@ -274,7 +284,7 @@ const Home = ({navigation}) => {
         </View>
 
         {/* Books */}
-        <View style={{flex: 1, marginTop: SIZES.padding}}>
+        <View style={{ flex: 1, marginTop: SIZES.padding }}>
           <FlatList
             nestedScrollEnabled={true}
             data={myBooks}
@@ -289,18 +299,18 @@ const Home = ({navigation}) => {
   }
 
   function renderCategoryHeader() {
-    const renderItem = ({item}) => {
+    const renderItem = ({ item }) => {
       return (
         <TouchableOpacity
-          style={{flex: 1, marginRight: SIZES.padding}}
+          style={{ flex: 1, marginRight: SIZES.padding }}
           onPress={() => setSelectedCategory(item.id)}>
           {selectedCategory == item.id && (
-            <Text style={{...FONTS.h2, color: COLORS.white}}>
+            <Text style={{ ...FONTS.h2, color: COLORS.white }}>
               {item.categoryName}
             </Text>
           )}
           {selectedCategory != item.id && (
-            <Text style={{...FONTS.h2, color: COLORS.lightGray}}>
+            <Text style={{ ...FONTS.h2, color: COLORS.lightGray }}>
               {item.categoryName}
             </Text>
           )}
@@ -309,7 +319,7 @@ const Home = ({navigation}) => {
     };
 
     return (
-      <View style={{flex: 1, paddingLeft: SIZES.padding}}>
+      <View style={{ flex: 1, paddingLeft: SIZES.padding }}>
         <FlatList
           nestedScrollEnabled={true}
           data={categories}
@@ -332,11 +342,11 @@ const Home = ({navigation}) => {
       books = selectedCategoryBooks[0].books;
     }
 
-    const renderItem = ({item}) => {
+    const renderItem = ({ item }) => {
       return (
-        <View style={{marginVertical: SIZES.base}}>
+        <View style={{ marginVertical: SIZES.base }}>
           <TouchableOpacity
-            style={{flex: 1, flexDirection: 'row'}}
+            style={{ flex: 1, flexDirection: 'row' }}
             onPress={() =>
               navigation.navigate('BookDetail', {
                 book: item,
@@ -344,12 +354,12 @@ const Home = ({navigation}) => {
             }>
             {/* Book Cover */}
             <Image
-              source={{uri: item.bookCover}}
+              source={{ uri: item.bookCover }}
               resizeMode="cover"
-              style={{width: 85, height: 130, borderRadius: 10}}
+              style={{ width: 85, height: 130, borderRadius: 10 }}
             />
 
-            <View style={{flex: 1, marginLeft: SIZES.radius}}>
+            <View style={{ flex: 1, marginLeft: SIZES.radius }}>
               {/* Book name and author */}
               <View>
                 <Text
@@ -360,13 +370,13 @@ const Home = ({navigation}) => {
                   }}>
                   {item.bookName}
                 </Text>
-                <Text style={{...FONTS.h3, color: COLORS.lightGray}}>
+                <Text style={{ ...FONTS.h3, color: COLORS.lightGray }}>
                   {item.author}
                 </Text>
               </View>
 
               {/* Book Info */}
-              <View style={{flexDirection: 'row', marginTop: SIZES.radius}}>
+              <View style={{ flexDirection: 'row', marginTop: SIZES.radius }}>
                 <Image
                   source={icons.page_filled_icon}
                   resizeMode="contain"
@@ -405,7 +415,7 @@ const Home = ({navigation}) => {
               </View>
 
               {/* Genre */}
-              <View style={{flexDirection: 'row', marginTop: SIZES.base}}>
+              <View style={{ flexDirection: 'row', marginTop: SIZES.base }}>
                 {item.genre.includes('Adventure') && (
                   <View
                     style={{
@@ -417,7 +427,7 @@ const Home = ({navigation}) => {
                       height: 40,
                       borderRadius: SIZES.radius,
                     }}>
-                    <Text style={{...FONTS.body3, color: COLORS.lightGreen}}>
+                    <Text style={{ ...FONTS.body3, color: COLORS.lightGreen }}>
                       Adventure
                     </Text>
                   </View>
@@ -433,7 +443,7 @@ const Home = ({navigation}) => {
                       height: 40,
                       borderRadius: SIZES.radius,
                     }}>
-                    <Text style={{...FONTS.body3, color: COLORS.lightRed}}>
+                    <Text style={{ ...FONTS.body3, color: COLORS.lightRed }}>
                       Romance
                     </Text>
                   </View>
@@ -449,7 +459,7 @@ const Home = ({navigation}) => {
                       height: 40,
                       borderRadius: SIZES.radius,
                     }}>
-                    <Text style={{...FONTS.body3, color: COLORS.lightBlue}}>
+                    <Text style={{ ...FONTS.body3, color: COLORS.lightBlue }}>
                       Drama
                     </Text>
                   </View>
@@ -460,7 +470,7 @@ const Home = ({navigation}) => {
 
           {/* Bookmark Button */}
           <TouchableOpacity
-            style={{position: 'absolute', top: 5, right: 12}}
+            style={{ position: 'absolute', top: 5, right: 12 }}
             onPress={() => console.log('Bookmark')}>
             <Image
               source={icons.bookmark_icon}
@@ -478,7 +488,7 @@ const Home = ({navigation}) => {
 
     return (
       <View
-        style={{flex: 1, marginTop: SIZES.radius, paddingLeft: SIZES.padding}}>
+        style={{ flex: 1, marginTop: SIZES.radius, paddingLeft: SIZES.padding }}>
         <FlatList
           nestedScrollEnabled={true}
           data={books}
@@ -490,20 +500,20 @@ const Home = ({navigation}) => {
     );
   }
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.black}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black }}>
       {/* Header Section */}
-      <View style={{height: 200}}>
+      <View style={{ height: 200 }}>
         {renderHeader(profile)}
         {renderButtonSection()}
       </View>
 
       {/* Body Section */}
-      <ScrollView nestedScrollEnabled={true} style={{marginTop: SIZES.radius}}>
+      <ScrollView nestedScrollEnabled={true} style={{ marginTop: SIZES.radius }}>
         {/* Books Section */}
         <View>{renderMyBookSection(myBooks)}</View>
 
         {/* Categories Section */}
-        <View style={{marginTop: SIZES.padding}}>
+        <View style={{ marginTop: SIZES.padding }}>
           <View>{renderCategoryHeader()}</View>
           {(isRender) ? <View>{renderCategoryData()}</View> : null}
         </View>

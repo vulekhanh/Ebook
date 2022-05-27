@@ -20,6 +20,7 @@ export class FirebaseManager extends Component {
         phoneNumber: "",
         address: "",
         status: "",
+        isAdmin: false,
     }
     // Data của chỉ số sức khỏe
     dataUserBorrow = {

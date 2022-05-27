@@ -97,6 +97,7 @@ const Tabs = () => {
           }
         },
       })}>
+      
       <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />
       <Tab.Screen
         name="Search"

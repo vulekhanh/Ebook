@@ -20,7 +20,6 @@ const AddBooks = ({ navigation }) => {
     const [imageSource, setImageSource] = useState("");
     const AddNewBook = async () => {
         var nameImageBook = dataBooks.bookName;
-        //dataBooks.bookCover = nameImageBook;
         var temp = await manager.uploadImage("Books", nameImageBook, imageSource);
         dataBooks.bookCover = manager.sourceImage;
         manager.pushData("Books", dataBooks);
@@ -52,7 +51,7 @@ const AddBooks = ({ navigation }) => {
                 >ID books :</Text>
                 <TextInput
                     style={styles.inputInfo}
-                    onChangeText={value => dataBooks.id = value}
+                    onChangeText={value => dataBooks.id = parseInt(value)}
                 />
                 <Text
                     style={styles.infoTitle}
@@ -100,7 +99,7 @@ const AddBooks = ({ navigation }) => {
                             onChangeText={value => dataBooks.pageNo = value}
                         />
                     </View>
-                    <Pressable
+                    <TouchableOpacity
                         onPress={async () => {
                             await manager.pickImage();
                             setImageSource(manager.uriImage);
@@ -129,7 +128,7 @@ const AddBooks = ({ navigation }) => {
                                 style={{ height: 50, width: 50, }}
                             />
                         }
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -172,7 +171,6 @@ const styles = StyleSheet.create({
     },
     infoTitle: {
         fontSize: 15,
-        //fontFamily: "Roboto-Medium",
         color: "#424BAF",
         paddingTop: 10,
         paddingBottom: 10,
@@ -180,9 +178,7 @@ const styles = StyleSheet.create({
     inputInfo: {
         borderWidth: 1,
         borderRadius: 5,
-        //height : 40,
         padding: 5,
-        //width: Dimensions.get('window').width - 60,
         width : "90%",
         alignItems: 'center',
     },
