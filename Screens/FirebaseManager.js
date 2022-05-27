@@ -1,13 +1,15 @@
 import React, { Component, useEffect, useState } from 'react';
-import {Alert } from "react-native";
+import { Alert } from "react-native";
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { getActionFromState } from '@react-navigation/native';
 import storage from '@react-native-firebase/storage';
+import * as ImagePicker from 'react-native-image-picker';
 
 export class FirebaseManager extends Component {
     //#region data
     userName;
+    uriImage;
     // Data của Nhật ký
     dataAccount = {
         userName: "",
@@ -34,22 +36,25 @@ export class FirebaseManager extends Component {
     }
     // Data của bảng thống kê
     dataBook = {
-        idBook: "",
-        bookCover: "",
+        id: 0,
         bookName: "",
+        bookCover: "",
+        rating: 0,
+        language: "",
+        pageNo: 0,
         author: "",
-        stock: "",
-        genre: "",
-        numberPage: "",
-        descripsion: "",
-        rating: "",
-        read: "",
+        genre: [],
+        readed: "",
+        description: "",
+        backgroundColor: "rgba(240,240,232,0.9)",
+        navTintColor: '#000',
     }
     //#endregion
 
     constructor(props) {
         super(props)
         this.userName = this.GetUserName();
+        this.uriImage = "";
     }
     //#region user account method
     checkLogin() {
@@ -78,37 +83,35 @@ export class FirebaseManager extends Component {
             .catch(error => {
                 console.log(error)
                 if (error.code === 'auth/wrong-password') {
-                    Alert.alert("Health Trangking ","Sai mật khẩu");
+                    Alert.alert("Health Trangking ", "Sai mật khẩu");
                 }
                 if (error.code === 'auth/user-not-found') {
-                    Alert.alert("Health Trangking ","Mail sai hoặc chưa được đăng kí");
+                    Alert.alert("Health Trangking ", "Mail sai hoặc chưa được đăng kí");
                 }
-                if(error.code === "auth/invalid-email"){
-                    Alert.alert("Health Trangking ","Mail không đúng định dạng");
+                if (error.code === "auth/invalid-email") {
+                    Alert.alert("Health Trangking ", "Mail không đúng định dạng");
                 }
             });
     };
     // Đăng kí tài khoảng với mail và pass
-    singUp(userName, mail, pass) {
+    singUp(name, mail, pass) {
         auth().createUserWithEmailAndPassword(mail, pass)
-            .then((res) => {
+            .then(() => {
                 const user = firebase.auth().currentUser;
                 user.updateProfile({
-                    displayName: userName
+                    displayName: mail
                 })
-                Alert.alert("Health Trangking ","Đăng kí thành công");
-                const data = this.dataAccount;
-                data.email = mail;
-                data.userName = userName;
-                this.userName = userName;
-                this.AddDataRandomDoc("Account",data);
+                this.dataAccount.email = mail;
+                this.dataAccount.name = name;
+                this.pushData("Account", this.dataAccount);
+                Alert.alert("Health Trangking ", "Đăng kí thành công");
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    Alert.alert("Health Trangking ","Mail đã có người sử dụng");
+                    Alert.alert("Health Trangking ", "Mail đã có người sử dụng");
                 }
                 if (error.code === 'auth/invalid-email') {
-                    Alert.alert("Health Trangking ","Mail không hợp lệ");
+                    Alert.alert("Health Trangking ", "Mail không hợp lệ");
                 }
             })
     }
@@ -127,20 +130,20 @@ export class FirebaseManager extends Component {
     }
     // Reset password
 
-    async ResetPass(mail){
+    async ResetPass(mail) {
         await auth().sendPasswordResetEmail(mail)
-        .then(()=>{
-            Alert.alert("Health Trangking ","Vui lòng kiểm tra hòm thư");
-        })
-        .catch(error =>{
-            console.log(error);
-            if (error.code === 'auth/user-not-found') {
-                Alert.alert("Health Trangking ","Mail chưa đăng ký");
-            }
-            if (error.code === 'auth/invalid-email') {
-                Alert.alert("Health Trangking ","Mail không hợp lệ");
-            }
-        });
+            .then(() => {
+                Alert.alert("Health Trangking ", "Vui lòng kiểm tra hòm thư");
+            })
+            .catch(error => {
+                console.log(error);
+                if (error.code === 'auth/user-not-found') {
+                    Alert.alert("Health Trangking ", "Mail chưa đăng ký");
+                }
+                if (error.code === 'auth/invalid-email') {
+                    Alert.alert("Health Trangking ", "Mail không hợp lệ");
+                }
+            });
     }
 
     //Lấy user name
@@ -154,13 +157,13 @@ export class FirebaseManager extends Component {
         auth().signOut().then(() => { console.log("Log out succesed") })
     };
     //#endregion
-    
+
     //#region Data method
     //PS: Query is a array EX: query =  ["day", "==", "10/06/2002"]
     // GetData from database
     async getData(collection, query?) {
         let temp = []
-        if (query){
+        if (query) {
             const data = await firestore()
                 .collection(collection)
                 .where(query[0], query[1], query[2])
@@ -169,7 +172,7 @@ export class FirebaseManager extends Component {
                 temp.push(doc.data())
             })
         }
-        else{
+        else {
             const data = await firestore()
                 .collection(collection)
                 .get()
@@ -227,20 +230,44 @@ export class FirebaseManager extends Component {
     }
     //#endregion
     //#region Image method
+    async pickImage(){
+        let options = {
+            mediaType: 'photo',
+            storageOptions: {
+             skipBackup: true
+            }
+           };
+          await ImagePicker.launchImageLibrary(options, response => {
+            if (response.didCancel) {
+             //console.log('User cancelled photo picker');
+             this.uriImage="null";
+            } else if (response.error) {
+             //console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+             //console.log('User tapped custom button: ', response.customButton);
+            } else {
+             const source = { uri : response.assets[0].uri };
+             this.uriImage = source.uri;
+            }
+           });
+    }
+
     async getImage(collection, imageName){
-        const file = this.userName + '/' + collection + '/' + imageName + ".png";
+        const file = collection + '/' + imageName + ".png";
         const url = await storage().ref(file).getDownloadURL();
         return url;
     }
     async uploadImage(collection, imageName, imagePath){
-        const file = this.userName + '/' + collection + '/' + imageName + ".png"
+        const file = collection + '/' + imageName + ".png"
         const reference = storage().ref(file);
-        await reference.putFile(imagePath).then(()=>{
+        await reference.putFile(imagePath).then(async ()=>{
             console.log("success!")
+            //var url = await this.getImage(collection,imageName);
+            //return url;
         });
     }
     async deleteImage(collection, imageName){
-        const file = this.userName + '/' + collection + '/' + imageName + ".png";
+        const file = collection + '/' + imageName + ".png";
         await storage().ref(file).delete();
     }
     //#endregion

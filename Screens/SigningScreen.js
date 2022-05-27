@@ -7,14 +7,26 @@ import {
   ImageBackground,
   ScrollView,
   Dimensions,
+  Alert
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import { FirebaseManager } from './FirebaseManager';
 KeyboardAwareScrollView;
 const SigningScreen = ({navigation}) => {
+  const manager = new FirebaseManager();
+  const [name, setName] = useState("");
+  const [mail, setMail] = useState("");
+  const [pass, setPass] = useState("");
+  const [rePass, setRePass] = useState("");
+  const [checkLogin, setCheckLogin] = useState(true);
   const [isSignIn, setIsSignIn] = useState(true);
+  if(manager.checkLogin() && checkLogin){
+      navigation.replace('Home')
+      setCheckLogin(false);
+  }
   const header = () => {
     return (
       <View style={styles.titleContainer}>
@@ -52,6 +64,7 @@ const SigningScreen = ({navigation}) => {
             style={styles.inputBoxStyle}
             placeholder="Email"
             placeholderTextColor="#FFFFFF"
+            onChangeText={value => setMail(value)}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -60,14 +73,32 @@ const SigningScreen = ({navigation}) => {
             style={styles.inputBoxStyle}
             placeholder="Password"
             placeholderTextColor="#FFFFFF"
+            secureTextEntry
+            onChangeText={value => setPass(value)}
           />
         </View>
         <TouchableOpacity
           style={styles.signingButtonStyle}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={async () => {
+            if(mail.length > 0 && pass.length > 0){
+              await manager.signIn(mail,pass);
+            }
+            else{
+              Alert.alert("Library Manager", "Vui lòng kiểm tra lại thông tin");
+            }
+          }}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={()=>{
+            if(mail.length > 0){
+              manager.ResetPass(mail);
+            }
+            else{
+              Alert.alert("Library Manager", "Vui lòng nhập mail");
+            }
+          }}
+        >
           <Text style={styles.buttonText}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
@@ -87,6 +118,7 @@ const SigningScreen = ({navigation}) => {
               style={styles.inputBoxStyle}
               placeholder="Name"
               placeholderTextColor="#FFFFFF"
+              onChangeText={value => setName(value)}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -99,11 +131,12 @@ const SigningScreen = ({navigation}) => {
               style={styles.inputBoxStyle}
               placeholder="Email"
               placeholderTextColor="#FFFFFF"
+              onChangeText={value => setMail(value)}
             />
           </View>
           <View style={styles.inputContainer}>
-            <FontistoIcon
-              name="email"
+            <AntDesignIcon
+              name="lock"
               style={styles.iconStyle}
               color="#FFFFFF"
             />
@@ -111,6 +144,8 @@ const SigningScreen = ({navigation}) => {
               style={styles.inputBoxStyle}
               placeholder="Password"
               placeholderTextColor="#FFFFFF"
+              secureTextEntry
+              onChangeText={value => setPass(value)}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -122,10 +157,21 @@ const SigningScreen = ({navigation}) => {
             <TextInput
               style={styles.inputBoxStyle}
               placeholder="Confirm password"
+              secureTextEntry
               placeholderTextColor="#FFFFFF"
+              onChangeText={value => setRePass(value)}
             />
           </View>
-          <TouchableOpacity style={styles.signingButtonStyle}>
+          <TouchableOpacity style={styles.signingButtonStyle}
+            onPress = {async ()=>{
+              if(pass == rePass && pass.length >= 6){
+                await manager.singUp(name,mail,pass);
+              }
+              else{
+                Alert.alert("Library Manager", "Vui lòng kiểm tra lại thông tin");
+              }
+            }}
+          >
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -204,6 +250,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: '90%',
     height: 40,
+    color : '#fff'
   },
   inputContainer: {
     flexDirection: 'row',

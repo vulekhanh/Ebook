@@ -7,6 +7,7 @@ import SigningScreen from './Screens/SigningScreen';
 import AccountSettingScreen from './Screens/Account';
 import BookmarkedScreen from './Screens/Bookmarked';
 import {StatusBar} from 'react-native';
+import AddBooks from './Screens/AddBooks';
 import Test from './Screens/test';
 const theme = {
   ...DefaultTheme,
@@ -28,10 +29,10 @@ const App = () => {
         {/* <Stack.Screen name="testScreen" component={ Test}/> */}
         <Stack.Screen name="SigningScreen" component={SigningScreen} />
         <Stack.Screen name="Home" component={Tabs} />
-        <Stack.Screen name='AccountList' component={Tabs} />
-        
         {/* Screens */}
         <Stack.Screen name="BookDetail" component={BookDetail} />
+        <Stack.Screen name="Test" component={Test} />
+        <Stack.Screen name="AddBooks" component={AddBooks} />
         <Stack.Screen name="BookmarkedScreen" component={BookmarkedScreen} />
       </Stack.Navigator>
     </NavigationContainer>

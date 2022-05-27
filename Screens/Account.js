@@ -12,13 +12,14 @@
   import ButtonUser from '../custom component/ButtonUser';
   import { useNavigation } from '@react-navigation/core';
   import { COLORS } from '../constants';
+import { FirebaseManager } from './FirebaseManager';
   
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
   const AccountSettingScreen = () => {
+    const manager = new FirebaseManager();
     const navigation = useNavigation();
-  
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -77,7 +78,8 @@
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('SigningScreen');
+                    manager.SignOut();
+                    navigation.replace('SigningScreen');
                   }}
                   style={styles.button2}
                 >

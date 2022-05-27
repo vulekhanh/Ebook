@@ -6,6 +6,7 @@ import AccountSettingScreen from '../Screens/Account';
 import {icons, COLORS} from '../constants';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import AccountList from '../Screens/AccountList';
+import SearchBook from '../Screens/SearchBook';
 
 const Tab = createBottomTabNavigator();
 
@@ -99,7 +100,7 @@ const Tabs = () => {
       <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />
       <Tab.Screen
         name="Search"
-        component={Home}
+        component={SearchBook}
         options={{headerShown: false}}
       />
       <Tab.Screen
