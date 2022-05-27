@@ -221,11 +221,6 @@ const Home = ({navigation}) => {
   }
 
   function renderMyBookSection(myBooks) {
-    const [uri, setUri] = useState("");
-    useEffect(async()=>{
-      var temp = await manager.getImage("Books", "book");
-      setUri(temp);
-    },[])
     const renderItem = ({item, index}) => {
       return (
         <TouchableOpacity
@@ -242,7 +237,7 @@ const Home = ({navigation}) => {
           {/* Book Cover */}
           <Image
             //source={item.bookCover}
-            source={{uri : uri}}
+            source={{uri : item.bookCover}}
             resizeMode="cover"
             style={{
               width: 150,
@@ -349,7 +344,7 @@ const Home = ({navigation}) => {
             }>
             {/* Book Cover */}
             <Image
-              source={item.bookCover}
+              source={{uri: item.bookCover}}
               resizeMode="cover"
               style={{width: 85, height: 130, borderRadius: 10}}
             />

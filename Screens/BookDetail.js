@@ -112,7 +112,7 @@ const BookDetail = ({route, navigation}) => {
         <View
           style={{flex: 5, paddingTop: SIZES.padding2, alignItems: 'center'}}>
           <Image
-            source={book.bookCover}
+            source={{uri: book.bookCover}}
             resizeMode="contain"
             style={{
               flex: 1,

@@ -10,6 +10,7 @@ export class FirebaseManager extends Component {
     //#region data
     userName;
     uriImage;
+    sourceImage;
     // Data của Nhật ký
     dataAccount = {
         userName: "",
@@ -260,10 +261,10 @@ export class FirebaseManager extends Component {
     async uploadImage(collection, imageName, imagePath){
         const file = collection + '/' + imageName + ".png"
         const reference = storage().ref(file);
-        await reference.putFile(imagePath).then(async ()=>{
-            console.log("success!")
-            //var url = await this.getImage(collection,imageName);
-            //return url;
+        await reference.putFile(imagePath).then(async(value)=>{
+            var temp = await this.getImage(collection, imageName);
+            this.sourceImage = temp;
+            console.log("Add Success!")
         });
     }
     async deleteImage(collection, imageName){

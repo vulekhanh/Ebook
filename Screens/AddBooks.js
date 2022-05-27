@@ -9,21 +9,22 @@ import {
     SafeAreaView,
     StyleSheet,
     Dimensions,
-    Pressable,
     ScrollView
 } from 'react-native'
 import { FirebaseManager } from './FirebaseManager';
 
-const AddBooks = () => {
+const AddBooks = ({ navigation }) => {
     const manager = new FirebaseManager();
     const [dataBooks, setDataBooks] = useState(manager.dataBook);
     const [isImage, setIsImage] = useState(false);
     const [imageSource, setImageSource] = useState("");
-    const AddNewBook = () => {
+    const AddNewBook = async () => {
         var nameImageBook = dataBooks.bookName;
-        dataBooks.bookCover = nameImageBook;
+        //dataBooks.bookCover = nameImageBook;
+        var temp = await manager.uploadImage("Books", nameImageBook, imageSource);
+        dataBooks.bookCover = manager.sourceImage;
         manager.pushData("Books", dataBooks);
-        manager.uploadImage("Books", nameImageBook, manager.uriImage);
+        navigation.replace("Home");
     }
     const Header = () => {
         return (
@@ -48,6 +49,13 @@ const AddBooks = () => {
             <View style={{ paddingLeft: 30 }}>
                 <Text
                     style={styles.infoTitle}
+                >ID books :</Text>
+                <TextInput
+                    style={styles.inputInfo}
+                    onChangeText={value => dataBooks.id = value}
+                />
+                <Text
+                    style={styles.infoTitle}
                 >Name :</Text>
                 <TextInput
                     style={styles.inputInfo}
@@ -62,74 +70,75 @@ const AddBooks = () => {
                 />
                 <Text
                     style={styles.infoTitle}
-                >Genre :</Text>
-                <TextInput
-                    style={styles.inputInfo}
-                    onChangeText={value => dataBooks.genre = value}
-                />
-                <Text
-                    style={styles.infoTitle}
-                >Language :</Text>
-                <TextInput
-                    style={styles.inputInfo}
-                    onChangeText={value => dataBooks.language = value}
-                />
-                <Text
-                    style={styles.infoTitle}
-                >Page Number :</Text>
-                <TextInput
-                    style={styles.inputInfo}
-                    onChangeText={value => dataBooks.pageNo = value}
-                />
-                <Text
-                    style={styles.infoTitle}
                 >Description :</Text>
                 <TextInput
                     style={styles.inputInfo}
                     onChangeText={value => dataBooks.description = value}
 
                 />
-            </View>
-        )
-    }
-    const ImgaeBooks = () => {
-        return (
-            <View style={{ alignItems: 'center', margin: 10 }}>
-                <Pressable
-                    onPress={async () => {
-                        await manager.pickImage();
-                        setImageSource(manager.uriImage);
-                        setIsImage(true);
-                    }}
-                    style={{
-                        borderWidth: 1,
-                        padding: isImage ? 0 : 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: 150,
-                        width: 120,
-                        borderRadius: 20,
-                    }}>
-                    {isImage ?
-                        <Image
-                            source={{ uri: imageSource }}
-                            style={{ height: 150, width: 120, borderRadius: 20}}
-                            resizeMode = 'cover'
+                <View style = {{flex : 1, flexDirection: 'row', alignItems: 'center'}}>
+                    <View style = {{flex : 2}}>
+                        <Text
+                            style={styles.infoTitle}
+                        >Genre :</Text>
+                        <TextInput
+                            style={styles.inputInfo}
+                            onChangeText={value => dataBooks.genre = value}
                         />
-                        :
-                        <Image
-                            source={require('../assets/icons/add-image.png')}
-                            style={{ height: 50, width: 50, }}
+                        <Text
+                            style={styles.infoTitle}
+                        >Language :</Text>
+                        <TextInput
+                            style={styles.inputInfo}
+                            onChangeText={value => dataBooks.language = value}
                         />
-                    }
-                </Pressable>
+                        <Text
+                            style={styles.infoTitle}
+                        >Page Number :</Text>
+                        <TextInput
+                            style={styles.inputInfo}
+                            onChangeText={value => dataBooks.pageNo = value}
+                        />
+                    </View>
+                    <Pressable
+                        onPress={async () => {
+                            await manager.pickImage();
+                            setImageSource(manager.uriImage);
+                            setIsImage(true);
+                        }}
+                        style={{
+                            borderWidth: 1,
+                            padding: isImage ? 0 : 40,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: 150,
+                            width: 120,
+                            borderRadius: 20,
+                            marginRight : 20,
+                            //flex : 1,
+                        }}>
+                        {isImage ?
+                            <Image
+                                source={{ uri: imageSource }}
+                                style={{ height: 150, width: 120, borderRadius: 20 }}
+                                resizeMode='cover'
+                            />
+                            :
+                            <Image
+                                source={require('../assets/icons/add-image.png')}
+                                style={{ height: 50, width: 50, }}
+                            />
+                        }
+                    </Pressable>
+                </View>
+
             </View>
         )
     }
     const buttonSection = () => {
         return (
-            <View style={{ alignItems: 'center' }}>
-                <Pressable
+            <View style={{ alignItems: 'center', margin: 20 }}>
+                <TouchableOpacity
                     onPress={AddNewBook}
                     style={{
                         backgroundColor: "#22273B",
@@ -140,16 +149,17 @@ const AddBooks = () => {
                     <Text
                         style={{ color: '#fff', fontSize: 20, textAlign: 'center' }}
                     >Add Book</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
         )
     }
-
     return (
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView
+            style={{ flex: 1 }}
+            showsVerticalScrollIndicator={false}
+        >
             {Header()}
             {InfoBooks()}
-            {ImgaeBooks()}
             {buttonSection()}
         </ScrollView>
     )
@@ -172,7 +182,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         //height : 40,
         padding: 5,
-        width: Dimensions.get('window').width - 60,
+        //width: Dimensions.get('window').width - 60,
+        width : "90%",
         alignItems: 'center',
     },
 })

@@ -8,7 +8,6 @@ import AccountSettingScreen from './Screens/Account';
 import BookmarkedScreen from './Screens/Bookmarked';
 import {StatusBar} from 'react-native';
 import AddBooks from './Screens/AddBooks';
-import Test from './Screens/test';
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -23,7 +22,7 @@ const App = () => {
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator
-        initialRouteName={'SigningScreen'}
+        initialRouteName={'Home'}
         screenOptions={{headerShown: false}}>
         {/* Tabs */}
         {/* <Stack.Screen name="testScreen" component={ Test}/> */}
@@ -31,7 +30,6 @@ const App = () => {
         <Stack.Screen name="Home" component={Tabs} />
         {/* Screens */}
         <Stack.Screen name="BookDetail" component={BookDetail} />
-        <Stack.Screen name="Test" component={Test} />
         <Stack.Screen name="AddBooks" component={AddBooks} />
         <Stack.Screen name="BookmarkedScreen" component={BookmarkedScreen} />
       </Stack.Navigator>
