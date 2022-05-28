@@ -4,7 +4,7 @@ import vector from '../assets/icons/Vector.png'
 import { useNavigation } from '@react-navigation/core'
 import { COLORS } from '../constants';
 
-const ButtonUser = ({name}) => {
+const ButtonUser1 = ({name}) => {
     const navigation = useNavigation()
     
   return (
@@ -19,7 +19,7 @@ const ButtonUser = ({name}) => {
   )
 }
 
-export default ButtonUser
+export default ButtonUser1
 
 const styles = StyleSheet.create({
     container:{
