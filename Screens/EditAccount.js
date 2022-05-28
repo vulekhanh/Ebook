@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,10 +11,28 @@ import {
 import {COLORS, FONTS, SIZES, icons} from '../constants';
 import {useNavigation} from '@react-navigation/core';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { FirebaseManager } from './FirebaseManager';
+import { Value } from 'react-native-reanimated';
 
-const EditAccountScreen = () => {
-  const navigation = useNavigation();
+// 
 
+const EditAccountScreen = ({ route, navigation }) => {
+  //const navigation = useNavigation();
+  const manager = new FirebaseManager();
+  const [dataUser, setDataUser] = useState(route.params);
+  const [avatar, setAvatar] = useState(route.params.avatar);
+  const UpdateData = async () => {
+    if(avatar != dataUser.avatar){
+      await manager.uploadImage("Account", "avatar", avatar);
+      setAvatar(manager.sourceImage);
+      dataUser.avatar = avatar;
+    }
+    manager.UpdateData("Account", dataUser, ["email", "==", manager.userName])
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }],
+    });
+  }
   function renderHeader() {
     return (
       <View
@@ -59,9 +77,9 @@ const EditAccountScreen = () => {
             alignContent: 'center',
             marginTop: 40,
           }}>
-          <ImageBackground
+          <ImageBackground 
             source={{
-              uri: 'https://luyenkimmau.com.vn/memes-la-gi/imager_9000.jpg',
+              uri: avatar
             }}
             style={{
               height: 150,
@@ -74,7 +92,11 @@ const EditAccountScreen = () => {
               flexWrap: 'wrap-reverse',
             }}
             imageStyle={{borderRadius: 100}}>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={async() => {
+              await manager.pickImage();
+              if(manager.uriImage != "null")
+                setAvatar(manager.uriImage)
+            }}>
               <Image
                 source={{
                   uri: 'https://cdn3.iconfinder.com/data/icons/social-messaging-ui-color-line/254000/124-512.png',
@@ -92,7 +114,7 @@ const EditAccountScreen = () => {
               marginTop: 20,
               alignSelf: 'center',
             }}>
-            Ebook@gmail.com
+            {dataUser.email}
           </Text>
           <TextInput
             style={{
@@ -107,9 +129,10 @@ const EditAccountScreen = () => {
               borderRadius: 30,
               textAlign: 'center',
             }}
-            placeholder={'VKH'}
+            onChangeText = {value => dataUser.name = value}
+            placeholder={'Name'}
             placeholderTextColor={COLORS.lightGray}
-            selectionColor={COLORS.lightGray}></TextInput>
+            selectionColor={COLORS.lightGray}>{dataUser.name}</TextInput>
           <TextInput
             style={{
               fontSize: 20,
@@ -123,9 +146,10 @@ const EditAccountScreen = () => {
               borderRadius: 30,
               textAlign: 'center',
             }}
-            placeholder={'Nam'}
+            onChangeText = {value => dataUser.gender = value}
+            placeholder={'Gender'}
             placeholderTextColor={COLORS.lightGray}
-            selectionColor={COLORS.lightGray}></TextInput>
+            selectionColor={COLORS.lightGray}>{dataUser.gender}</TextInput>
           <TextInput
             style={{
               fontSize: 20,
@@ -139,10 +163,11 @@ const EditAccountScreen = () => {
               borderRadius: 30,
               textAlign: 'center',
             }}
-            placeholder={'08081508'}
+            onChangeText = {value => dataUser.phoneNumber = value}
+            placeholder={'Phone Number'}
             placeholderTextColor={COLORS.lightGray}
             keyboardType="number-pad"
-            selectionColor={COLORS.lightGray}></TextInput>
+            selectionColor={COLORS.lightGray}>{dataUser.phoneNumber}</TextInput>
           <TextInput
             style={{
               fontSize: 20,
@@ -156,9 +181,10 @@ const EditAccountScreen = () => {
               borderRadius: 30,
               textAlign: 'center',
             }}
-            placeholder={'Tp Ho Chi Minh'}
+            onChangeText = {value => dataUser.address = value}
+            placeholder={'Address'}
             placeholderTextColor={COLORS.lightGray}
-            selectionColor={COLORS.lightGray}></TextInput>
+            selectionColor={COLORS.lightGray}>{dataUser.address}</TextInput>
         </View>
       </View>
     );
@@ -175,6 +201,7 @@ const EditAccountScreen = () => {
           marginTop: 20,
         }}>
         <TouchableOpacity
+          onPress={UpdateData}
           style={{
             height: 50,
             width: 120,

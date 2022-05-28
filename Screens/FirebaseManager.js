@@ -13,7 +13,6 @@ export class FirebaseManager extends Component {
     sourceImage;
     // Data của Nhật ký
     dataAccount = {
-        userName: "",
         email: "",
         name: "",
         gender: "",
@@ -21,7 +20,7 @@ export class FirebaseManager extends Component {
         address: "",
         status: "",
         isAdmin: false,
-        avatar: "",
+        avatar: "https://firebasestorage.googleapis.com/v0/b/libraryapp-c2dfa.appspot.com/o/Account%2FavatarDefault.png?alt=media&token=80d36f3f-ee0b-4ae2-a474-74253149c2b1",
     }
     // Data của thông tin người dùng
     dataBorrowDetail = {
@@ -251,12 +250,12 @@ export class FirebaseManager extends Component {
     }
 
     async getImage(collection, imageName){
-        const file = collection + '/' + imageName + ".png";
+        const file = collection + '/' + this.userName + '/' + imageName + ".png";
         const url = await storage().ref(file).getDownloadURL();
         return url;
     }
     async uploadImage(collection, imageName, imagePath){
-        const file = collection + '/' + imageName + ".png"
+        const file = collection + '/' + this.userName + "/" + imageName + ".png"
         const reference = storage().ref(file);
         await reference.putFile(imagePath).then(async(value)=>{
             var temp = await this.getImage(collection, imageName);

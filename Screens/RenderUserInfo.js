@@ -12,12 +12,10 @@ import { FirebaseManager } from './FirebaseManager';
 
 const RenderUserInfo = ({ route, navigation }) => {
     const manager = new FirebaseManager();
-    const [dataUser, setDataUser] = useState(manager.dataAccount);
+    const [dataUser, setDataUser] = useState(route.params);
     const [dataUserBorrow, setDataUserBorrow] = useState([]);
     useEffect( async()=>{
-        var data = await manager.getData("Account", ["email", "==", "vanlinh1006@gmail.com"])
-        setDataUser(data[0]);
-        var dataBorow = await manager.getData("BorrowDetail", ["email", "==", "vanlinh1006@gmail.com"])
+        var dataBorow = await manager.getData("BorrowDetail", ["email", "==", route.params.email])
         setDataUserBorrow(dataBorow);
     },[])
 
@@ -86,7 +84,7 @@ const RenderUserInfo = ({ route, navigation }) => {
     const renderBooksBorrow = ({item}) =>{
         return( 
             <TouchableOpacity
-                onPress={()=> navigation.navigate("RenderBorrowDetail", {data :item, admin: true})} 
+                onPress={()=> navigation.navigate("RenderBorrowDetail", {data :item, admin: true, user : dataUser})} 
             >
                 <View style={{ 
                     flexDirection: 'row', 

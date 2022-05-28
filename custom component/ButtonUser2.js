@@ -4,18 +4,17 @@ import vector from '../assets/icons/Vector.png'
 import { useNavigation } from '@react-navigation/core'
 import { COLORS } from '../constants';
 
-const ButtonUser2 = ({name}) => {
+const ButtonUser2 = (props) => {
     const navigation = useNavigation()
     
   return (
       
     <View style={styles.container}>
-    <TouchableOpacity style={styles.TouchableOpacity} onPress={() => navigation.navigate('EditAccountScreen')}>
+    <TouchableOpacity style={styles.TouchableOpacity} onPress={props.setting}>
       </TouchableOpacity>
-      {name && <Text style={styles.textName}>{name}</Text>}
+      {props.name && <Text style={styles.textName}>{props.name}</Text>}
       <Image style={styles.icon} source={vector}/>
     </View>
-    
   )
 }
 

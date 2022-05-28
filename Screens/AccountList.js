@@ -18,101 +18,35 @@ import { FirebaseManager } from './FirebaseManager';
  - ListView from a map of objects
  - FlatList
  */
-function AccountList({navigation}) {
+function AccountList({ navigation }) {
     //list of foods = state
     const manager = new FirebaseManager();
     const [isAdmin, setIsAdmin] = useState(false);
-    const [data, setData] = useState([
-        {
-            name: 'Nguyen Van A',
-            url: 'https://i.pravatar.cc/300',
-            status: 'Borrowing',
-            id: 123,
-            // price: 5223.56,
-            website: 'https://edition.cnn.com',
-            socialNetworks: {
-                facebook: 'https://www.facebook.com/duyvu91',
-                twitter: 'https://twitter.com/LostInBrittany',
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
-        },
-        {
-            name: 'Nguyen Van B',
-            url: 'https://i.pravatar.cc/301',
-            status: 'Borrowing',
-            //price: 1124.56,
-            id: 234,
-            website: 'https://huands.abc.com',
-            socialNetworks: {
-                twitter: 'https://twitter.com/LostInBrittany',
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
-        },
-        {
-            name: 'Nguyen Van C',
-            url: 'https://i.pravatar.cc/307',
-            status: 'Borrowing',
-            price: 1124.56,
-            id: 345,
-            website: 'https://huands.abc.com',
-            socialNetworks: {
-                twitter: 'https://twitter.com/LostInBrittany',
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
-        },
-        {
-            name: 'Nguyen Van D',
-            url: 'https://i.pravatar.cc/323',
-            status: 'Not Borrow',
-            //price: 2342.56,
-            id: 456,
-            website: 'https://www.uiuds.com',
-            socialNetworks: {
-                facebook: 'https://www.facebook.com/duyvu91',
-            }
-        },
-        {
-            name: 'Nguyen Van E',
-            url: 'https://i.pravatar.cc/304',
-            status: 'Giveback late',
-            //price: 2354.56,
-            id: 456,
-            website: 'https://edition.sabc.com',
-            socialNetworks: {
-                instagram: 'https://www.instagram.com/nghiatran__/'
-            }
-        },
-        {
-            name: 'Abc xyz',
-            url: 'https://i.pravatar.cc/305',
-            status: 'Giveback late',
-            //price: 5568.11,
-            id: 456,
-            website: 'https://www.food.com/',
-            socialNetworks: {
-                instagram: 'https://www.instagram.com/aeisinger/'
-            }
-        }
-    ])
-    //const [data, setData] = useState([])
-    const [isRender, setIsRender] = useState(false);
+    // Store data user (not admin)
+    const [dataUser, setDataUser] = useState([])
+    // The data is currently up to the administrator or the user
+    const [data, setData] = useState([])
     useEffect(async () => {
         var temp = await manager.getData("Account", ["email", "==", manager.userName]);
         setIsAdmin(temp[0].isAdmin);
+        setDataUser(temp[0]);
         if (temp[0].isAdmin) {
-
+            var dataTemp = await manager.getData("Account");
+            dataTemp.forEach(item => {
+                if (!item.isAdmin)
+                    setData(value => [...value, item])
+            })
         }
         else {
             var dataTemp = await manager.getData("BorrowDetail", ["email", "==", manager.userName]);
             setData(dataTemp);
-            setIsRender(true);
         }
     }, [])
     const [searchText, setSearchText] = useState('')
     const renderBorrow = ({ item }) => {
         return (
             <TouchableOpacity
-                onPress={()=> navigation.navigate("RenderBorrowDetail", {data :item, admin: isAdmin})}
+                onPress={() => navigation.navigate("RenderBorrowDetail", { data: item, admin: false, user: dataUser })}
             >
                 <View style={{ flexDirection: 'row', margin: 10, backgroundColor: "#77587799", borderRadius: 20, height: 130, alignItems: 'center' }}>
                     <View>
@@ -127,21 +61,21 @@ function AccountList({navigation}) {
                             fontFamily: 'RobotoCondensed-Bold',
                             fontSize: 30,
                             borderBottomWidth: 2,
-                            color : "#ffffff",
+                            color: "#ffffff",
                             width: '90%',
                         }}>ID Ticket: {item.idTicket}</Text>
                         <Text style={{
                             fontSize: 17,
-                            color : "#ffffff99",
+                            color: "#ffffff99",
                             fontFamily: 'Roboto-Italic'
                         }}>Number of Books: {item.amount}</Text>
                         <Text style={{
                             fontSize: 17,
-                            color : "#ffffff99",
+                            color: "#ffffff99",
                             fontFamily: 'Roboto-Italic'
                         }}>Date borrow: {item.borrowDate}</Text>
                         <Text style={{
-                            color : "#ffffff99",
+                            color: "#ffffff99",
                             fontSize: 17,
                             fontFamily: 'Roboto-Italic'
                         }}>Date return: {item.returnDate}</Text>
@@ -154,7 +88,7 @@ function AccountList({navigation}) {
         .includes(searchText.toLowerCase()))
     return <SafeAreaView style={{ flex: 1, backgroundColor: '#1E1B26' }}>
         {isAdmin ?
-            <View style = {{flex : 1}}>
+            <View style={{ flex: 1 }}>
                 <View>
                     <View style={{
                         marginHorizontal: 10,
@@ -193,10 +127,10 @@ function AccountList({navigation}) {
                     data={filtered()}
                     renderItem={({ item }) =>
                         <AccountItem
-                            onPress={() => {
-                                alert(`You press item's name: ${item.name}`)
+                            PressUser={() => {
+                                navigation.navigate("RenderUserInfo", item)
                             }}
-                            account={item}
+                            data={item}
                             key={item.name}
                         />}
                     keyExtractor={eachAccount => eachAccount.name}
@@ -212,15 +146,18 @@ function AccountList({navigation}) {
                 </View>}
             </View>
             :
-            <View style={{ flex: 1 }}>
-                {isRender ?
+            (data.length > 0 ?
+                <View style={{ flex: 1 }}>
                     <FlatList
                         data={data}
                         renderItem={renderBorrow}
                     />
-                    :
-                    null}
-            </View>
+                </View>
+                :
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ color: "#black", fontSize : 18 }}>No data</Text>
+                </View>
+            )
         }
     </SafeAreaView>
 }

@@ -1,4 +1,4 @@
-  import React from 'react';
+  import React ,{useEffect, useState} from 'react';
   import {
     StyleSheet,
     Text,
@@ -20,9 +20,14 @@
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
 
-  const AccountSettingScreen = () => {
+  const AccountSettingScreen = ({navigation}) => {
     const manager = new FirebaseManager();
-    const navigation = useNavigation();
+    const [dataUser, setDataUser] = useState(manager.dataAccount);
+    //const navigation = useNavigation();
+    useEffect(async()=>{
+      var data = await manager.getData("Account", ["email", "==", manager.userName]);
+      setDataUser(data[0]);
+    },[])
     return (
       <ScrollView>
         <View style={styles.container}>
@@ -45,15 +50,18 @@
             {/* Card Info  */}
             <View style={styles.feature}>
               <CardInformation
-                name="Ebook"
-                mail="Ebook@gmail.com"
-                imageSource={{uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Van_Gogh_self-portrait.svg/754px-Van_Gogh_self-portrait.svg.png'}}
-                address="Ho Chi Minh City"
-                phone="18081508"
+                name={dataUser.name}
+                mail={dataUser.email}
+                imageSource={{uri: dataUser.avatar}}
+                address={dataUser.address}
+                phone={dataUser.phoneNumber}
               />
               <ButtonUser name="Your Favorite" />
               <ButtonUser1 name="Your Order" />
-              <ButtonUser2 name="Edit Information" />
+              <ButtonUser2 
+                name="Edit Information"
+                setting = {()=>{navigation.navigate('EditAccountScreen', dataUser);}}
+              />
               {/*<ButtonUser name="My Preferences" />*/}
               <ButtonUser3 name="About Us" />
               <View
@@ -68,8 +76,8 @@
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('EditAccountScreen');
+                  onPress={async () => {
+                    navigation.navigate('EditAccountScreen', dataUser);
                   }}
                   style={styles.button1}
                 >

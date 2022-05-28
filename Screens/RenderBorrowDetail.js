@@ -20,8 +20,7 @@ const RenderBorrowDetail = ({ route, navigation }) => {
             var temp = await manager.getData("Books", ["id", "==", value]);
             setDataBooks(value => [...value, temp[0]]);
         })
-        var getData = await manager.getData("Account", ["email", "==", data.email]);
-        setDataUser(getData[0]);
+        setDataUser(route.params.user);
     }, [])
 
     const RenderHeader = () => {
@@ -118,7 +117,8 @@ const RenderBorrowDetail = ({ route, navigation }) => {
                     <TouchableOpacity
                         style={[styles.Button, { backgroundColor: "#C5505E" }]}
                         onPress={() => {
-
+                            manager.RemoveData("BorrowDetail",["idTicket", '==', data.idTicket])
+                            navigation.navigate("AccountList") 
                         }}
                     >
                         <Text style={{

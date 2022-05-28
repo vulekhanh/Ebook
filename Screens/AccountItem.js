@@ -9,6 +9,7 @@ import {
     KeyboardAvoidingView,
     Keyboard
 } from 'react-native'
+import { FirebaseManager } from './FirebaseManager';
 //import { colors,theme } from '../constants';
 //import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -28,17 +29,12 @@ function _getColorFromStatus(status) {
             (status.toLowerCase().trim() == 'giveback late' ? 'darkorange' : 'green'))
 }
 function AccountItem(props) {
-    let { 
-        name, 
-        phoneNumber,  
-        status, 
-        url, 
-        website,         
-    } = props.account //destructuring an object    
-    const {onPress} = props
+    //destructuring an object
+    const manager = new FirebaseManager();
+    const [data,setData] = useState(props.data) 
     debugger
     return ( <TouchableOpacity 
-        onPress={onPress}
+        onPress={props.PressUser}
         style={{
         height: 150,                 
         paddingTop: 20,
@@ -54,7 +50,7 @@ function AccountItem(props) {
                 marginRight: 15
             }}
             source={{
-                uri: url
+                uri: data.avatar
         }} />
         <View style={{                    
             flex: 1,
@@ -65,7 +61,7 @@ function AccountItem(props) {
                 color: 'white',
                 fontSize: 15,
                 fontWeight: 'bold'
-            }}>{name}</Text>
+            }}>{data.name}</Text>
             <View style={{
                 height: 1,
                 backgroundColor: 'grey',                        
@@ -77,14 +73,14 @@ function AccountItem(props) {
                     fontSize: 13,
                 }}>Status: </Text>
                 <Text style={{
-                    color: _getColorFromStatus(status),
+                    color: _getColorFromStatus(data.status),
                     fontSize: 13,
-                }}>{status.toUpperCase()}</Text>
+                }}>{data.status.toUpperCase()}</Text>
             </View>
             <Text style={{
                     color: 'white',
                     fontSize: 13,
-            }}>Email: {website}</Text>
+            }}>Email: {data.email}</Text>
             {/* <Text style={{
                     color: 'white',
                     fontSize: 13,
@@ -92,7 +88,7 @@ function AccountItem(props) {
             <Text style={{
                     color: 'white',
                     fontSize: 13,
-            }}>Phone : {phoneNumber} </Text>
+            }}>Phone : {data.phoneNumber} </Text>
             
             {/* <View style={{
                 flexDirection: 'row'
