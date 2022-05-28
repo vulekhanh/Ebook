@@ -18,7 +18,7 @@ import { FirebaseManager } from './FirebaseManager';
  - ListView from a map of objects
  - FlatList
  */
-function AccountList(props) {
+function AccountList({navigation}) {
     //list of foods = state
     const manager = new FirebaseManager();
     const [isAdmin, setIsAdmin] = useState(false);
@@ -104,12 +104,6 @@ function AccountList(props) {
         }
         else {
             var dataTemp = await manager.getData("BorrowDetail", ["email", "==", manager.userName]);
-            // var temp = [1,4,2]
-            // temp.forEach(async (value)=>{
-            //     var test = await manager.getData("Books",["id", "==", value]);
-            //     console.log(test);
-            //     setData(value => [...value, test[0]]);
-            // })
             setData(dataTemp);
             setIsRender(true);
         }
@@ -117,7 +111,9 @@ function AccountList(props) {
     const [searchText, setSearchText] = useState('')
     const renderBorrow = ({ item }) => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={()=> navigation.navigate("RenderBorrowDetail", {data :item, admin: isAdmin})}
+            >
                 <View style={{ flexDirection: 'row', margin: 10, backgroundColor: "#77587799", borderRadius: 20, height: 130, alignItems: 'center' }}>
                     <View>
                         <Image

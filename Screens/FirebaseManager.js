@@ -21,11 +21,7 @@ export class FirebaseManager extends Component {
         address: "",
         status: "",
         isAdmin: false,
-    }
-    // Data của chỉ số sức khỏe
-    dataUserBorrow = {
-        mail: "",
-        idTicket: "",
+        avatar: "",
     }
     // Data của thông tin người dùng
     dataBorrowDetail = {

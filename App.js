@@ -8,6 +8,8 @@ import AccountSettingScreen from './Screens/Account';
 import BookmarkedScreen from './Screens/Bookmarked';
 import {StatusBar} from 'react-native';
 import AddBooks from './Screens/AddBooks';
+import RenderBorrowDetail from './Screens/RenderBorrowDetail';
+import RenderUserInfo from './Screens/RenderUserInfo';
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -22,7 +24,7 @@ const App = () => {
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator
-        initialRouteName={'SigningScreen'}
+        initialRouteName={'RenderUserInfo'}
         screenOptions={{headerShown: false}}>
         {/* Tabs */}
         {/* <Stack.Screen name="testScreen" component={ Test}/> */}
@@ -32,6 +34,9 @@ const App = () => {
         <Stack.Screen name="BookDetail" component={BookDetail} />
         <Stack.Screen name="AddBooks" component={AddBooks} />
         <Stack.Screen name="BookmarkedScreen" component={BookmarkedScreen} />
+        <Stack.Screen name="RenderBorrowDetail" component={RenderBorrowDetail} />
+        <Stack.Screen name="RenderUserInfo" component={RenderUserInfo} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
