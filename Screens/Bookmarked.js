@@ -5,12 +5,13 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  ScrollView,
   FlatList,
-  Dimensions
+  Dimensions,
 } from 'react-native';
-import { COLORS, FONTS, SIZES, icons, images } from '../constants';
-import { useNavigation } from '@react-navigation/core';
-import { color } from 'react-native-reanimated';
+import {COLORS, FONTS, SIZES, icons, images} from '../constants';
+import {useNavigation} from '@react-navigation/core';
+import {color} from 'react-native-reanimated';
 
 const windowWidth = Dimensions.get('window').width;
 const ListData = [
@@ -64,25 +65,21 @@ const ListData = [
   {
     id: 4,
     bookName: 'les misérables',
-    bookCover: {uri:'https://cdn.cokesbury.com/images/products/ExtraLarge/215/9781501887215.jpg'},
-
-
-  }
-]
-
-
+    bookCover: {
+      uri: 'https://cdn.cokesbury.com/images/products/ExtraLarge/215/9781501887215.jpg',
+    },
+  },
+];
 
 const BookmarkedScreen = () => {
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({item}) => {
     return (
-      <View
-        style={{ marginVertical: 15, paddingLeft: '6%', paddingRight: '5%'}}
-      >
+      <View style={{marginVertical: 15, paddingLeft: '6%', paddingRight: '5%'}}>
         <Image
           source={item.bookCover}
-          resizeMode = 'cover'
+          resizeMode="cover"
           style={{
             width: 150,
             height: 220,
@@ -91,23 +88,25 @@ const BookmarkedScreen = () => {
         />
         <View style={{flexDirection: 'column'}}>
           <Text style={{color: '#fff'}}>{item.bookName}</Text>
-          <TouchableOpacity style={{
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: SIZES.base,
-                      marginRight: SIZES.base,
-                      backgroundColor: COLORS.darkRed,
-                      height: 40,
-                      borderRadius: SIZES.radius,
-                      alignSelf: 'center',
-                    }}>
-            <Text style={{color: COLORS.lightRed, alignSelf: 'center'}}>Delete</Text>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: SIZES.base,
+              marginRight: SIZES.base,
+              backgroundColor: COLORS.darkRed,
+              height: 40,
+              borderRadius: SIZES.radius,
+              alignSelf: 'center',
+            }}>
+            <Text style={{color: COLORS.lightRed, alignSelf: 'center'}}>
+              Delete
+            </Text>
           </TouchableOpacity>
         </View>
-        
       </View>
-    )
-  }
+    );
+  };
   function renderHeader() {
     return (
       <View
@@ -118,7 +117,7 @@ const BookmarkedScreen = () => {
           alignItems: 'flex-end',
         }}>
         <TouchableOpacity
-          style={{ marginLeft: SIZES.base }}
+          style={{marginLeft: SIZES.base}}
           onPress={() => navigation.goBack()}>
           <Image
             source={icons.back_arrow_icon}
@@ -132,95 +131,43 @@ const BookmarkedScreen = () => {
         </TouchableOpacity>
 
         <View
-          style={{ flex: 0.95, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: 'bold' }}>Bookmarked</Text>
-        </View>
-      </View>
-    )
-  }
-
-  function renderBookList({ _ListData }) {
-    return (
-      <View style={{
-        height: 350,
-        width: windowWidth,
-
-      }}>
-        <FlatList
-          data={_ListData}
-          renderItem={renderItem}
-          keyExtractor={item => `${item.id}`}
-        >
-        </FlatList>
-      </View>
-
-    )
-  }
-
-  function renderFooter(navigation) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'flex-end', padding: SIZES.padding }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            height: 65,
-            backgroundColor: COLORS.primary,
-            borderRadius: SIZES.radius,
-          }}>
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => navigation.navigate('')}>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  marginLeft: SIZES.base,
-                  color: COLORS.white,
-                  fontSize: 20
-                }}>Borrow Now</Text>
-            </View>
-          </TouchableOpacity>
+          style={{flex: 0.95, alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{color: COLORS.white, fontSize: 30, fontWeight: 'bold'}}>
+            Bookmarked
+          </Text>
         </View>
       </View>
     );
   }
 
   return (
-    <View style={{
-      flex: 1,
-      backgroundColor: COLORS.black
-    }}
-    >
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.black,
+      }}>
       {/*Header*/}
       {renderHeader()}
 
       {/*Book List*/}
       {/* {renderBookList(ListData)} */}
-      <View style={{
-        height: 620,
-        marginTop: 15,
-        marginBottom: 15,
-        width: windowWidth,
-        
-      }}>
+      <ScrollView
+        style={{
+          height: 620,
+          marginTop: 15,
+          marginBottom: 15,
+          width: windowWidth,
+        }}>
         <FlatList
-
           data={ListData}
           renderItem={renderItem}
           numColumns={2}
-          keyExtractor={(item) => item.id}
-        >
-        </FlatList>
-      </View>
+          keyExtractor={item => item.id}></FlatList>
+      </ScrollView>
 
       {/*Footer*/}
-      {renderFooter()}
+      {/* {renderFooter()} */}
     </View>
-  )
-}
+  );
+};
 export default BookmarkedScreen;

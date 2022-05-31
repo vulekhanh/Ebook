@@ -11,6 +11,7 @@ import AddBooks from './Screens/AddBooks';
 import RenderBorrowDetail from './Screens/RenderBorrowDetail';
 import RenderUserInfo from './Screens/RenderUserInfo';
 import EditAccountScreen from './Screens/EditAccount';
+import BorrowBookScreen from './Screens/BorrowBook';
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -38,7 +39,8 @@ const App = () => {
         <Stack.Screen name="RenderBorrowDetail" component={RenderBorrowDetail} />
         <Stack.Screen name="RenderUserInfo" component={RenderUserInfo} />
         <Stack.Screen name="EditAccountScreen" component={EditAccountScreen} />
-
+        <Stack.Screen name="BorrowBookScreen" component={BorrowBookScreen} />
+      
         
       </Stack.Navigator>
     </NavigationContainer>

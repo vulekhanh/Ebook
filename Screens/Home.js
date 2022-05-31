@@ -171,7 +171,7 @@ const Home = ({ navigation }) => {
           {/* Claim */}
           <TouchableOpacity
             style={{ flex: 1 }}
-            onPress={() => console.log('Claim')}>
+            onPress={() => navigation.navigate('BorrowBookScreen')}>
             <View
               style={{
                 flex: 1,
