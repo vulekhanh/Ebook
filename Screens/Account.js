@@ -10,9 +10,6 @@
   } from 'react-native';
   import CardInformation from '../custom component/CardInformation';
   import ButtonUser from '../custom component/ButtonUser';
-  import ButtonUser1 from '../custom component/ButtonUser1';
-  import ButtonUser2 from '../custom component/ButtonUser2';
-  import ButtonUser3 from '../custom component/ButtonUser3';
   import { useNavigation } from '@react-navigation/core';
   import { COLORS } from '../constants';
   import { FirebaseManager } from './FirebaseManager';
@@ -56,14 +53,23 @@
                 address={dataUser.address}
                 phone={dataUser.phoneNumber}
               />
-              <ButtonUser name="Your Favorite" />
-              <ButtonUser1 name="Your Order" />
-              <ButtonUser2 
+              <ButtonUser 
+                name="Your Favorite" 
+                onPress = {()=>{navigation.navigate("BookmarkedScreen");}}
+              />
+              <ButtonUser 
+                name="Your Order" 
+                onPress = {()=>{navigation.navigate("AccountList");}}
+              />
+              <ButtonUser 
                 name="Edit Information"
-                setting = {()=>{navigation.navigate('EditAccountScreen', dataUser);}}
+                onPress = {()=>{navigation.navigate('EditAccountScreen', dataUser);}}
               />
               {/*<ButtonUser name="My Preferences" />*/}
-              <ButtonUser3 name="About Us" />
+              <ButtonUser 
+                name="About Us" 
+                onPress = {()=>{console.log("About us")}}
+              />
               <View
                 style={{
                   

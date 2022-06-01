@@ -7,12 +7,14 @@ import {
   Image,
   ScrollView,
   Animated,
+  Alert
 } from 'react-native';
-import {FONTS, COLORS, SIZES, icons} from '../constants';
+import { FONTS, COLORS, SIZES, icons } from '../constants';
+import { FirebaseManager } from './FirebaseManager';
 
 const LineDivider = () => {
   return (
-    <View style={{width: 1, paddingVertical: 5}}>
+    <View style={{ width: 1, paddingVertical: 5 }}>
       <View
         style={{
           flex: 1,
@@ -23,9 +25,9 @@ const LineDivider = () => {
   );
 };
 
-const BookDetail = ({route, navigation}) => {
+const BookDetail = ({ route, navigation }) => {
   const [book, setBook] = React.useState(null);
-
+  const manager = new FirebaseManager();
   const [scrollViewWholeHeight, setScrollViewWholeHeight] = React.useState(1);
   const [scrollViewVisibleHeight, setScrollViewVisibleHeight] =
     React.useState(0);
@@ -33,13 +35,32 @@ const BookDetail = ({route, navigation}) => {
   const indicator = new Animated.Value(0);
 
   React.useEffect(() => {
-    let {book} = route.params;
+    let { book } = route.params;
     setBook(book);
   }, [book]);
 
+  const AddBookmarkOrCart = async (name) => {
+    var dataBM = await manager.getData(name, ["email", "==", manager.userName])
+    var dataAfter = dataBM[0];
+    var checkExist = false;
+    dataAfter.books.forEach(value => {
+      if (value == book.id) {
+        checkExist = true;
+      }
+    })
+    if (!checkExist) {
+      dataAfter.books.push(book.id)
+      await manager.UpdateData(name, dataAfter, ["email", "==", manager.userName])
+      Alert.alert("Library Manager", "Add success!")
+    }
+    else {
+      Alert.alert("Library Manager", "This book is already in " + name)
+    }
+  }
+
   function renderBookInfoSection() {
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ImageBackground
           source={book.bookCover}
           resizeMode="cover"
@@ -72,7 +93,7 @@ const BookDetail = ({route, navigation}) => {
             alignItems: 'flex-end',
           }}>
           <TouchableOpacity
-            style={{marginLeft: SIZES.base}}
+            style={{ marginLeft: SIZES.base }}
             onPress={() => navigation.goBack()}>
             <Image
               source={icons.back_arrow_icon}
@@ -86,14 +107,14 @@ const BookDetail = ({route, navigation}) => {
           </TouchableOpacity>
 
           <View
-            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={{...FONTS.h3, color: book.navTintColor}}>
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ ...FONTS.h3, color: book.navTintColor }}>
               Book Detail
             </Text>
           </View>
 
           <TouchableOpacity
-            style={{marginRigth: SIZES.base}}
+            style={{ marginRigth: SIZES.base }}
             onPress={() => console.log('Click More')}>
             <Image
               source={icons.more_icon}
@@ -110,9 +131,9 @@ const BookDetail = ({route, navigation}) => {
 
         {/* Book Cover */}
         <View
-          style={{flex: 5, paddingTop: SIZES.padding2, alignItems: 'center'}}>
+          style={{ flex: 5, paddingTop: SIZES.padding2, alignItems: 'center' }}>
           <Image
-            source={{uri: book.bookCover}}
+            source={{ uri: book.bookCover }}
             resizeMode="contain"
             style={{
               flex: 1,
@@ -124,11 +145,11 @@ const BookDetail = ({route, navigation}) => {
 
         {/* Book Name and Author */}
         <View
-          style={{flex: 1.8, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{...FONTS.h2, color: book.navTintColor}}>
+          style={{ flex: 1.8, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ ...FONTS.h2, color: book.navTintColor }}>
             {book.bookName}
           </Text>
-          <Text style={{...FONTS.body3, color: book.navTintColor}}>
+          <Text style={{ ...FONTS.body3, color: book.navTintColor }}>
             {book.author}
           </Text>
         </View>
@@ -143,11 +164,11 @@ const BookDetail = ({route, navigation}) => {
             backgroundColor: 'rgba(0,0,0,0.3)',
           }}>
           {/* Rating */}
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ ...FONTS.h3, color: COLORS.white }}>
               {book.rating}
             </Text>
-            <Text style={{...FONTS.body4, color: COLORS.white}}>Rating</Text>
+            <Text style={{ ...FONTS.body4, color: COLORS.white }}>Rating</Text>
           </View>
 
           <LineDivider />
@@ -159,10 +180,10 @@ const BookDetail = ({route, navigation}) => {
               paddingHorizontal: SIZES.radius,
               alignItems: 'center',
             }}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>
+            <Text style={{ ...FONTS.h3, color: COLORS.white }}>
               {book.pageNo}
             </Text>
-            <Text style={{...FONTS.body4, color: COLORS.white}}>
+            <Text style={{ ...FONTS.body4, color: COLORS.white }}>
               Number of Page
             </Text>
           </View>
@@ -170,11 +191,11 @@ const BookDetail = ({route, navigation}) => {
           <LineDivider />
 
           {/* Language */}
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ ...FONTS.h3, color: COLORS.white }}>
               {book.language}
             </Text>
-            <Text style={{...FONTS.body4, color: COLORS.white}}>Language</Text>
+            <Text style={{ ...FONTS.body4, color: COLORS.white }}>Language</Text>
           </View>
         </View>
       </View>
@@ -185,7 +206,7 @@ const BookDetail = ({route, navigation}) => {
     const indicatorSize =
       scrollViewWholeHeight > scrollViewVisibleHeight
         ? (scrollViewVisibleHeight * scrollViewVisibleHeight) /
-          scrollViewWholeHeight
+        scrollViewWholeHeight
         : scrollViewVisibleHeight;
 
     const difference =
@@ -194,9 +215,9 @@ const BookDetail = ({route, navigation}) => {
         : 1;
 
     return (
-      <View style={{flex: 1, flexDirection: 'row', padding: SIZES.padding}}>
+      <View style={{ flex: 1, flexDirection: 'row', padding: SIZES.padding }}>
         {/* Custom Scrollbar */}
-        <View style={{width: 4, height: '100%', backgroundColor: COLORS.gray1}}>
+        <View style={{ width: 4, height: '100%', backgroundColor: COLORS.gray1 }}>
           <Animated.View
             style={{
               width: 4,
@@ -220,7 +241,7 @@ const BookDetail = ({route, navigation}) => {
 
         {/* Description */}
         <ScrollView
-          contentContainerStyle={{paddingLeft: SIZES.padding2}}
+          contentContainerStyle={{ paddingLeft: SIZES.padding2 }}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
           onContentSizeChange={(width, height) => {
@@ -228,14 +249,14 @@ const BookDetail = ({route, navigation}) => {
           }}
           onLayout={({
             nativeEvent: {
-              layout: {x, y, width, height},
+              layout: { x, y, width, height },
             },
           }) => {
             setScrollViewVisibleHeight(height);
           }}
           onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {y: indicator}}}],
-            {useNativeDriver: false},
+            [{ nativeEvent: { contentOffset: { y: indicator } } }],
+            { useNativeDriver: false },
           )}>
           <Text
             style={{
@@ -245,7 +266,7 @@ const BookDetail = ({route, navigation}) => {
             }}>
             Description
           </Text>
-          <Text style={{...FONTS.body2, color: COLORS.lightGray}}>
+          <Text style={{ ...FONTS.body2, color: COLORS.lightGray }}>
             {book.description}
           </Text>
         </ScrollView>
@@ -255,7 +276,7 @@ const BookDetail = ({route, navigation}) => {
 
   function renderBottomButton() {
     return (
-      <View style={{flex: 1, flexDirection: 'row'}}>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
         {/* Bookmark */}
         <TouchableOpacity
           style={{
@@ -267,7 +288,7 @@ const BookDetail = ({route, navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          onPress={() => console.log('Bookmark')}>
+          onPress={() => { AddBookmarkOrCart("Bookmarked") }}>
           <Image
             source={icons.bookmark_icon}
             resizeMode="contain"
@@ -290,8 +311,8 @@ const BookDetail = ({route, navigation}) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          onPress={() => console.log('Borrow')}>
-          <Text style={{...FONTS.h3, color: COLORS.white}}>Borrow Book</Text>
+          onPress={() => AddBookmarkOrCart("Cart")}>
+          <Text style={{ ...FONTS.h3, color: COLORS.white }}>Borrow Book</Text>
         </TouchableOpacity>
       </View>
     );
@@ -299,15 +320,15 @@ const BookDetail = ({route, navigation}) => {
 
   if (book) {
     return (
-      <View style={{flex: 1, backgroundColor: COLORS.black}}>
+      <View style={{ flex: 1, backgroundColor: COLORS.black }}>
         {/* Book Cover Section */}
-        <View style={{flex: 4}}>{renderBookInfoSection()}</View>
+        <View style={{ flex: 4 }}>{renderBookInfoSection()}</View>
 
         {/* Description */}
-        <View style={{flex: 2}}>{renderBookDescription()}</View>
+        <View style={{ flex: 2 }}>{renderBookDescription()}</View>
 
         {/* Buttons */}
-        <View style={{height: 70, marginBottom: 30}}>
+        <View style={{ height: 70, marginBottom: 30 }}>
           {renderBottomButton()}
         </View>
       </View>

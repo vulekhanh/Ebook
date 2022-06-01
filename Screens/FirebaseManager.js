@@ -26,7 +26,7 @@ export class FirebaseManager extends Component {
     dataBorrowDetail = {
         idTicket: "",
         email: "",
-        idBook: "",
+        idBook: [],
         amount: "",
         borrowDate: "",
         returnDate: "",
@@ -45,6 +45,14 @@ export class FirebaseManager extends Component {
         description: "",
         backgroundColor: "rgba(240,240,232,0.9)",
         navTintColor: '#000',
+    }
+    dataCart = {
+        email: "",
+        books: [],
+    }
+    dataBookmarked = {
+        email: "",
+        books: [],
     }
     //#endregion
 
@@ -100,7 +108,11 @@ export class FirebaseManager extends Component {
                 })
                 this.dataAccount.email = mail;
                 this.dataAccount.name = name;
+                this.dataCart.email = mail;
+                this.dataBookmarked.email = mail;
                 this.pushData("Account", this.dataAccount);
+                this.pushData("Cart", this.dataCart);
+                this.pushData("Bookmarked", this.dataBookmarked);
                 Alert.alert("Health Trangking ", "Đăng kí thành công");
             })
             .catch(error => {

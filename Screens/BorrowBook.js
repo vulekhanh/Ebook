@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,89 +11,81 @@ import {
   Modal,
   TextInput,
   Alert,
+  StyleSheet,
 } from 'react-native';
-import {COLORS, FONTS, SIZES, icons, images} from '../constants';
-import {useNavigation} from '@react-navigation/core';
-import {color} from 'react-native-reanimated';
+import { COLORS, FONTS, SIZES, icons, images } from '../constants';
+import { useNavigation } from '@react-navigation/core';
+import { color } from 'react-native-reanimated';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { FirebaseManager } from './FirebaseManager';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const ListData = [
-  {
-    id: 1,
-    bookName: 'Other Words For Home',
-    bookCover: images.otherWordsForHome,
-    rating: 4.5,
-    language: 'Eng',
-    pageNo: 341,
-    author: 'Jasmine Warga',
-    genre: ['Romance', 'Adventure', 'Drama'],
-    readed: '12k',
-    description:
-      "Jude never thought she’d be leaving her beloved older brother and father behind, all the way across the ocean in Syria. But when things in her hometown start becoming volatile, Jude and her mother are sent to live in Cincinnati with relatives. At first, everything in America seems too fast and too loud. The American movies that Jude has always loved haven’t quite prepared her for starting school in the US—and her new label of 'Middle Eastern,' an identity she’s never known before. But this life also brings unexpected surprises—there are new friends, a whole new family, and a school musical that Jude might just try out for. Maybe America, too, is a place where Jude can be seen as she really is.",
-    backgroundColor: 'rgba(240,240,232,0.9)',
-    navTintColor: '#000',
-  },
 
-  {
-    id: 2,
-    bookName: 'The Metropolis',
-    bookCover: images.theMetropolist,
-    rating: 4.1,
-    language: 'Eng',
-    pageNo: 272,
-    author: 'Seith Fried',
-    genre: ['Adventure', 'Drama'],
-    readed: '13k',
-    description:
-      "In Metropolis, the gleaming city of tomorrow, the dream of the great American city has been achieved. But all that is about to change, unless a neurotic, rule-following bureaucrat and an irreverent, freewheeling artificial intelligence can save the city from a mysterious terrorist plot that threatens its very existence. Henry Thompson has dedicated his life to improving America's infrastructure as a proud employee of the United States Municipal Survey. So when the agency comes under attack, he dutifully accepts his unexpected mission to visit Metropolis looking for answers. But his plans to investigate quietly, quickly, and carefully are interrupted by his new partner: a day-drinking know-it-all named OWEN, who also turns out to be the projected embodiment of the agency's supercomputer. Soon, Henry and OWEN are fighting to save not only their own lives and those of the city's millions of inhabitants, but also the soul of Metropolis. The Municipalists is a thrilling, funny, and touching adventure story, a tour-de-force of imagination that trenchantly explores our relationships to the cities around us and the technologies guiding us into the future.",
-    backgroundColor: 'rgba(247,239,219,0.9)',
-    navTintColor: '#000',
-  },
 
-  {
-    id: 3,
-    bookName: 'The Tiny Dragon',
-    bookCover: images.theTinyDragon,
-    rating: 3.5,
-    language: 'Eng',
-    pageNo: 110,
-    author: 'Ana C Bouvier',
-    genre: ['Drama', 'Adventure', 'Romance'],
-    readed: '13k',
-    description:
-      'This sketchbook for kids is the perfect tool to improve your drawing skills! Designed to encourage kids around the world to express their uniqueness through drawing, sketching or doodling, this sketch book is filled with 110 high quality blank pages for creations. Add some fun markers, crayons, and art supplies and you have the perfect, easy gift for kids!',
-    backgroundColor: 'rgba(119,77,143,0.9)',
-    navTintColor: '#FFF',
-  },
-  {
-    id: 4,
-    bookName: 'les misérables',
-    bookCover: {
-      uri: 'https://cdn.cokesbury.com/images/products/ExtraLarge/215/9781501887215.jpg',
-    },
-  },
-];
-
-const BorrowBookScreen = () => {
-  const navigation = useNavigation();
+const BorrowBookScreen = ({ route, navigation }) => {
+  const [isAdmin, setIsAdmin] = useState(route.params)
+  const manager = new FirebaseManager();
+  const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [dateBorrow, setDateBorrow] = useState("");
+  const [dateReturn, setDateReturn] = useState("");
+  const [email, setEmail] = useState("");
 
-  const renderItem = ({item}) => {
+  useEffect(async () => {
+    if (!isAdmin)
+      setEmail(manager.userName);
+    var syncData = await manager.getData("Cart", ["email", "==", manager.userName]);
+    syncData[0].books.forEach(async value => {
+      var dataBook = await manager.getData("Books", ["id", "==", value]);
+      setData(items => [...items, dataBook[0]]);
+    })
+  }, [])
+
+  const HandleDate = (date) => {
+    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+  }
+
+  const RemoveBookFormList = (value) => {
+    var dataAfter = [];
+    var dataUpdate = {
+      email: manager.userName,
+      books: [],
+    };
+    data.forEach(item => {
+      if (item.id != value.id) {
+        dataAfter.push(item);
+        dataUpdate.books.push(item.id);
+      }
+    })
+    setData(dataAfter);
+    manager.UpdateData("Cart", dataUpdate, ["email", "==", manager.userName])
+  }
+  const renderItem = ({ item }) => {
     return (
-      <View style={{marginVertical: 10, paddingLeft: '6%', paddingRight: '5%'}}>
-        <Image
-          source={item.bookCover}
-          resizeMode="cover"
-          style={{
-            width: 150,
-            height: 220,
-            borderRadius: 20,
-          }}
-        />
-        <View style={{flexDirection: 'column'}}>
-          <Text style={{color: '#fff'}}>{item.bookName}</Text>
+      <View style={{ marginVertical: 10, paddingLeft: '6%', paddingRight: '5%', alignItems: 'center' }}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('BookDetail', {
+              book: item,
+            })
+          }
+        >
+          <Image
+            source={{ uri: item.bookCover }}
+            resizeMode="cover"
+            style={{
+              width: 150,
+              height: 220,
+              borderRadius: 20,
+            }}
+          />
+        </TouchableOpacity>
+        <View style={{ flexDirection: 'column' }}>
+          <Text style={{ color: '#fff' }}>{item.bookName}</Text>
           <TouchableOpacity
+            onPress={() => RemoveBookFormList(item)}
             style={{
               justifyContent: 'center',
               alignItems: 'center',
@@ -105,7 +97,7 @@ const BorrowBookScreen = () => {
               borderRadius: SIZES.radius,
               alignSelf: 'center',
             }}>
-            <Text style={{color: COLORS.lightRed, alignSelf: 'center'}}>
+            <Text style={{ color: COLORS.lightRed, alignSelf: 'center' }}>
               Delete
             </Text>
           </TouchableOpacity>
@@ -113,25 +105,24 @@ const BorrowBookScreen = () => {
       </View>
     );
   };
-
-  const renderItem2 = ({item}) => {
-    if(item.id < 4){
-      if(item.id % 2 == 0){
+  const renderItem2 = ({ item }) => {
+    if (item.id < 4) {
+      if (item.id % 2 == 0) {
         return (
           <View
-            style={{marginVertical: 10,  flexDirection: 'row', marginLeft: 20}}>
-            <Text style={{color: COLORS.lightGray2, fontSize: 20}}>{item.id}</Text>
-            <Text style={{color: COLORS.lightGray2, fontSize: 20}}>. </Text>
-            <Text style={{color: COLORS.lightGray2, fontSize: 20}}>{item.bookName}</Text>
+            style={{ marginVertical: 10, flexDirection: 'row', marginLeft: 20 }}>
+            <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.id}</Text>
+            <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>. </Text>
+            <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.bookName}</Text>
           </View>
         );
       }
       return (
         <View
-          style={{marginVertical: 10,  flexDirection: 'row', marginLeft: 20}}>
-          <Text style={{color: COLORS.lightGray2, fontSize: 20}}>{item.id}</Text>
-          <Text style={{color: COLORS.lightGray2, fontSize: 20}}>. </Text>
-          <Text style={{color: COLORS.lightGray2, fontSize: 20}}>{item.bookName}</Text>
+          style={{ marginVertical: 10, flexDirection: 'row', marginLeft: 20 }}>
+          <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.id}</Text>
+          <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>. </Text>
+          <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.bookName}</Text>
         </View>
       );
     }
@@ -146,7 +137,7 @@ const BorrowBookScreen = () => {
           alignItems: 'flex-end',
         }}>
         <TouchableOpacity
-          style={{marginLeft: SIZES.base}}
+          style={{ marginLeft: SIZES.base }}
           onPress={() => navigation.goBack()}>
           <Image
             source={icons.back_arrow_icon}
@@ -160,8 +151,8 @@ const BorrowBookScreen = () => {
         </TouchableOpacity>
 
         <View
-          style={{flex: 0.95, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{color: COLORS.white, fontSize: 30, fontWeight: 'bold'}}>
+          style={{ flex: 0.95, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ color: COLORS.white, fontSize: 30, fontWeight: 'bold' }}>
             Your Books List
           </Text>
         </View>
@@ -172,7 +163,7 @@ const BorrowBookScreen = () => {
   function renderFooter() {
     return (
       <View
-        style={{flex: 1, justifyContent: 'flex-end', padding: SIZES.padding}}>
+        style={{ flex: 1, justifyContent: 'flex-end', padding: SIZES.padding }}>
         <View
           style={{
             flexDirection: 'row',
@@ -182,8 +173,12 @@ const BorrowBookScreen = () => {
             marginBottom: 5,
           }}>
           <TouchableOpacity
-            style={{flex: 1}}
-            onPress={() => setModalVisible(!modalVisible)}>
+            style={{ flex: 1 }}
+            onPress={() => {
+              var date = HandleDate(new Date(Date.now()))
+              setDateBorrow(date);
+              setModalVisible(!modalVisible)
+            }}>
             <View
               style={{
                 flex: 1,
@@ -207,10 +202,45 @@ const BorrowBookScreen = () => {
     );
   }
 
-  const handleConfirmBtn = () => {
-    setModalVisible(!modalVisible)
-    Alert.alert("Borrow successful");
+  const handleConfirmBtn = async () => {
+    if(email == "" || dateReturn == ""){
+      Alert.alert("Library Manager", "Please check information")
+    }
+    else{
+      const dataAfter = {
+        email: email,
+        books: [],
+      }
+      manager.UpdateData("Cart", dataAfter, ["email", "==", manager.userName]);
+      var idTicket = 1;
+      var temp = await manager.getData("BorrowDetail")
+      temp.forEach(value => {
+        if(idTicket <= value.idTicket)
+          idTicket = value.idTicket + 1;
+      })
+      const dataBorrow = manager.dataBorrowDetail;
+      data.forEach(value => {
+        dataBorrow.idBook.push(value.id)
+      })
+      dataBorrow.email = email;
+      dataBorrow.amount = data.length;
+      dataBorrow.borrowDate = dateBorrow;
+      dataBorrow.returnDate = dateReturn;
+      dataBorrow.idTicket = idTicket;
+      manager.pushData("BorrowDetail",dataBorrow)
+      setData([]);
+      Alert.alert("Library Manager","Borrow successful");
+      setModalVisible(!modalVisible)
+    }
   }
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirmPickTime = (date) => {
+    setDateReturn(HandleDate(date));
+    hideDatePicker();
+  };
   return (
     <View
       style={{
@@ -228,7 +258,7 @@ const BorrowBookScreen = () => {
           width: windowWidth,
         }}>
         <FlatList
-          data={ListData}
+          data={data}
           renderItem={renderItem}
           numColumns={2}
           keyExtractor={item => item.id}></FlatList>
@@ -236,6 +266,13 @@ const BorrowBookScreen = () => {
 
       {/*Footer*/}
       {renderFooter()}
+      {/*Borrow Detail*/}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirmPickTime}
+        onCancel={hideDatePicker}
+      />
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View
           style={{
@@ -271,7 +308,7 @@ const BorrowBookScreen = () => {
                     color: COLORS.lightGray2,
                     fontSize: 30,
                   }}>
-                  TICKET
+                  BORROW
                 </Text>
               </View>
               <View
@@ -300,35 +337,37 @@ const BorrowBookScreen = () => {
                 marginTop: 30,
                 alignContent: 'center',
               }}>
-              <TextInput
-                style={{
-                  height: 40,
-                  width: 250,
-                  borderColor: COLORS.lightGray2,
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  alignSelf: 'center',
-                  color: COLORS.white,
-                  paddingLeft: 10,
-                  fontSize: 15,
-                }}
-                placeholder="Enter Email"
-                placeholderTextColor={COLORS.lightGray2}></TextInput>
-              <TextInput
-                style={{
-                  height: 40,
-                  width: 250,
-                  borderColor: COLORS.lightGray2,
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  alignSelf: 'center',
-                  color: COLORS.white,
-                  paddingLeft: 10,
-                  marginTop: 25,
-                  fontSize: 15,
-                }}
-                placeholder="Enter Name"
-                placeholderTextColor={COLORS.lightGray2}></TextInput>
+              <View style={styles.containerInput}>
+                <Text style={styles.title}>Email: </Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Email"
+                  editable={isAdmin ? true : false}
+                  onChangeText={value => setEmail(value)}
+                  placeholderTextColor={COLORS.lightGray2}>
+                  {email}</TextInput>
+              </View>
+              <View style={styles.containerInput}>
+                <Text style={styles.title}>Date: </Text>
+                <TextInput
+                  style={styles.input}
+                  editable={false}
+                  placeholderTextColor={COLORS.lightGray2}>
+                  {dateBorrow}</TextInput>
+              </View>
+              <View style={styles.containerInput}>
+                <Text style={styles.title}>Return: </Text>
+                <TouchableOpacity
+                  onPress={() => setDatePickerVisibility(true)}
+                >
+                  <TextInput
+                    style={styles.input}
+                    editable={false}
+                    placeholder="Choose date return"
+                    placeholderTextColor={COLORS.lightGray2}>
+                    {dateReturn}</TextInput>
+                </TouchableOpacity>
+              </View>
               <View
                 style={{
                   height: 1,
@@ -339,11 +378,11 @@ const BorrowBookScreen = () => {
                   marginVertical: 20,
                 }}></View>
               <FlatList
-                data={ListData}
-                style={{height: 250}}
+                data={data}
+                style={{ height: 250 }}
                 renderItem={renderItem2}
                 keyExtractor={item => item.id}></FlatList>
-                <View
+              <View
                 style={{
                   height: 1,
                   borderColor: COLORS.lightGray2,
@@ -352,30 +391,30 @@ const BorrowBookScreen = () => {
                   alignSelf: 'center',
                   marginVertical: 10,
                 }}></View>
-                <TouchableOpacity
+              <TouchableOpacity
+                style={{
+                  alignSelf: 'center',
+                  marginTop: 20,
+                  borderRadius: 10,
+                  width: 100,
+                  height: 40,
+                  backgroundColor: COLORS.primary,
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                }}
+                onPress={handleConfirmBtn}
+              >
+                <Text
                   style={{
                     alignSelf: 'center',
-                    marginTop: 20,
-                    borderRadius: 10,
-                    width: 100,
-                    height: 40,
-                    backgroundColor: COLORS.primary,
-                    justifyContent: 'center',
-                    alignContent: 'center',
+                    fontFamily: 'Roboto-Bold',
+                    color: COLORS.lightGray2,
+                    fontSize: 15,
                   }}
-                  onPress={handleConfirmBtn}
                 >
-                  <Text
-                    style={{
-                      alignSelf: 'center',
-                      fontFamily: 'Roboto-Bold',
-                      color: COLORS.lightGray2,
-                      fontSize: 15,
-                    }}
-                  >
-                    Confirm
-                  </Text>
-                </TouchableOpacity>
+                  Confirm
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -383,4 +422,32 @@ const BorrowBookScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  containerInput: {
+    //flex : 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  title: {
+    color: COLORS.primary,
+    fontSize: 17,
+    marginRight: 10,
+    flex: 1,
+  },
+  input: {
+    height: 40,
+    width: 250,
+    borderColor: COLORS.lightGray2,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignSelf: 'center',
+    color: COLORS.white,
+    paddingLeft: 10,
+    //marginTop: 25,
+    fontSize: 15,
+  }
+})
 export default BorrowBookScreen;
