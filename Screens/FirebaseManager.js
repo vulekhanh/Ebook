@@ -18,7 +18,7 @@ export class FirebaseManager extends Component {
         gender: "",
         phoneNumber: "",
         address: "",
-        status: "",
+        status: "not borrow",
         isAdmin: false,
         avatar: "https://firebasestorage.googleapis.com/v0/b/libraryapp-c2dfa.appspot.com/o/Account%2FavatarDefault.png?alt=media&token=80d36f3f-ee0b-4ae2-a474-74253149c2b1",
     }

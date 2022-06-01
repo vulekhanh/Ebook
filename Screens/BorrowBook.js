@@ -203,20 +203,24 @@ const BorrowBookScreen = ({ route, navigation }) => {
   }
 
   const handleConfirmBtn = async () => {
-    if(email == "" || dateReturn == ""){
+    if (email == "" || dateReturn == "") {
       Alert.alert("Library Manager", "Please check information")
     }
-    else{
+    else {
       const dataAfter = {
-        email: email,
+        email: manager.userName,
         books: [],
       }
       manager.UpdateData("Cart", dataAfter, ["email", "==", manager.userName]);
       var idTicket = 1;
       var temp = await manager.getData("BorrowDetail")
+      var countTicketUser = 0;
       temp.forEach(value => {
-        if(idTicket <= value.idTicket)
+        if (idTicket <= value.idTicket)
           idTicket = value.idTicket + 1;
+        if (email == value.email) {
+          countTicketUser = countTicketUser + 1;
+        }
       })
       const dataBorrow = manager.dataBorrowDetail;
       data.forEach(value => {
@@ -227,9 +231,15 @@ const BorrowBookScreen = ({ route, navigation }) => {
       dataBorrow.borrowDate = dateBorrow;
       dataBorrow.returnDate = dateReturn;
       dataBorrow.idTicket = idTicket;
-      manager.pushData("BorrowDetail",dataBorrow)
+      manager.pushData("BorrowDetail", dataBorrow);
+      if (countTicketUser == 0) {
+        var dataUser = await manager.getData("Account", ["email", "==", email])
+        var dataUserAfter = dataUser[0];
+        dataUserAfter.status = "Borrowing";
+        await manager.UpdateData("Account", dataUserAfter, ["email", "==", email])
+      }
       setData([]);
-      Alert.alert("Library Manager","Borrow successful");
+      Alert.alert("Library Manager", "Borrow successful");
       setModalVisible(!modalVisible)
     }
   }

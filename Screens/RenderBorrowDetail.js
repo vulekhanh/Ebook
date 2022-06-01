@@ -116,9 +116,17 @@ const RenderBorrowDetail = ({ route, navigation }) => {
                 {isAdmin ? 
                     <TouchableOpacity
                         style={[styles.Button, { backgroundColor: "#C5505E" }]}
-                        onPress={() => {
-                            manager.RemoveData("BorrowDetail",["idTicket", '==', data.idTicket])
-                            navigation.navigate("AccountList") 
+                        onPress={async () => {
+                            await manager.RemoveData("BorrowDetail",["idTicket", '==', data.idTicket])
+                            var dataUserBorrow = await manager.getData("BorrowDetail", ["email", "==", dataUser.email])
+                            if(dataUserBorrow.length == 0){
+                              var dataAccount = await manager.getData("Account", ["email", "==", dataUser.email]);
+                              var dataAccountAfter = dataAccount[0]; 
+                              dataAccountAfter.status = "not borrow";
+                              await manager.UpdateData("Account", dataAccountAfter, ["email", "==", dataUser.email])
+                            }
+                            navigation.navigate("AccountList")
+
                         }}
                     >
                         <Text style={{

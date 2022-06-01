@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 //import {colors,theme} from '../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5'
-//import AccountItem from './AccountItem';
+//import AccountItem from './AccountItem'; 
 import AccountItem from './AccountItem'
 import { FirebaseManager } from './FirebaseManager';
 
