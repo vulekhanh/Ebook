@@ -8,7 +8,6 @@ const ButtonUser = (props) => {
     const navigation = useNavigation()
     
   return (
-      
     <View style={styles.container}>
     <TouchableOpacity style={styles.TouchableOpacity} onPress={props.onPress}>
       </TouchableOpacity>
@@ -22,7 +21,8 @@ export default ButtonUser
 
 const styles = StyleSheet.create({
     container:{
-        flex:1, 
+        flex:1,
+        marginVertical: 1.5,
     },
     TouchableOpacity:{
       backgroundColor: COLORS.lightGray2,
@@ -34,23 +34,16 @@ const styles = StyleSheet.create({
     },
     textName:{
         position:'absolute',
-        
-        
         fontSize:18,
         fontWeight:'bold',
         top:32,
-        left:30
-        
+        left:30   
     },
     icon:{
         width:18, 
         height:18, 
         position:'absolute',
         right:30,
-        top:35
-        
-            
-    },
-    
-    
+        top:35  
+    }, 
 })

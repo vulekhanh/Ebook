@@ -294,7 +294,7 @@ const BorrowBookScreen = ({ route, navigation }) => {
           <View
             style={{
               height: windowHeight - 165,
-              width: windowWidth - 80,
+              width: windowWidth - 55,
               backgroundColor: COLORS.gray,
               borderRadius: 20,
               alignSelf: 'center',

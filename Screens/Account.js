@@ -26,11 +26,12 @@
       setDataUser(data[0]);
     },[])
     return (
-      <ScrollView>
+      <ScrollView
+      style={{ height: windowHeight, width: windowWidth}}>
         <View style={styles.container}>
           {/* Header  */}
           <View style={styles.containerHeader}>
-            <Text style={{style: styles.textHeader, color: COLORS.white, fontSize: 25, fontWeight:'bold'}}>Personal details</Text>
+            <Text style={{style: styles.textHeader, marginTop:20, marginBottom: 10, color: COLORS.white, fontSize: 30, fontWeight:'bold'}}>Personal details</Text>
 
             {/*<TouchableOpacity style={styles.btnEdit}>
               
@@ -52,6 +53,7 @@
                 imageSource={{uri: dataUser.avatar}}
                 address={dataUser.address}
                 phone={dataUser.phoneNumber}
+                gender={dataUser.gender}
               />
               <ButtonUser 
                 name="Your Favorite" 
@@ -119,10 +121,10 @@
   const styles = StyleSheet.create({
     container: {
       backgroundColor : COLORS.black,
-      paddingVertical: 77,
+      paddingVertical: 10,
       paddingHorizontal: 10,
       flex: 1,
-      //height: windowHeight,
+      // height: windowHeight,
     },
     containerHeader: {
       flexDirection: 'column',
