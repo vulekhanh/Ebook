@@ -22,7 +22,7 @@ const RenderUserInfo = ({ route, navigation }) => {
     const Header = () =>{
         return(
             <View style = {{
-                backgroundColor : "#424BAF",  
+                backgroundColor : 'darkorange',  
                 alignItems : 'center', 
                 //justifyContent : 'center',
                 height: 100,

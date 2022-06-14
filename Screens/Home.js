@@ -193,7 +193,7 @@ const Home = ({ navigation }) => {
                   ...FONTS.body3,
                   color: COLORS.white,
                 }}>
-                Borrowed
+                Borrow
               </Text>
             </View>
           </TouchableOpacity>
@@ -474,7 +474,7 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* Bookmark Button */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ position: 'absolute', top: 5, right: 12 }}
             onPress={() => console.log('Bookmark')}>
             <Image
@@ -486,7 +486,7 @@ const Home = ({ navigation }) => {
                 tintColor: COLORS.primary,
               }}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       );
     };

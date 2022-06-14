@@ -142,7 +142,7 @@ function AccountList({ navigation }) {
                     <Text style={{
                         color: 'black',
                         fontSize: 18
-                    }}>No food found</Text>
+                    }}>No Account found</Text>
                 </View>}
             </View>
             :
