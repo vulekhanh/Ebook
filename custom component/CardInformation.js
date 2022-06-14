@@ -9,7 +9,7 @@ const CardInformation = ({name, mail, phone, address, imageSource, gender}) => {
         <View style={styles.avatar}>
           <ImageBackground source={imageSource} style={styles.image}>
             <Image
-              style={{height: 25, width: 25}}
+              style={{height: 30, width: 30}}
               source={{
                 uri: 'https://static.wikia.nocookie.net/the-adventures-of-ra1nb0wk1tty-and-her-allies/images/4/48/Male-icon.png/revision/latest?cb=20210227210143',
               }}></Image>
@@ -32,7 +32,7 @@ const CardInformation = ({name, mail, phone, address, imageSource, gender}) => {
         <View style={styles.avatar}>
           <ImageBackground source={imageSource} style={styles.image}>
             <Image
-              style={{height: 25, width: 25}}
+              style={{height: 30, width: 30}}
               source={{
                 uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pink_female_symbol.svg/2048px-Pink_female_symbol.svg.png',
               }}></Image>
@@ -73,11 +73,11 @@ export default CardInformation;
 const styles = StyleSheet.create({
   card: {
     width: '95%',
-    height: 170,
+    height: 180,
     backgroundColor: 'black',
     marginHorizontal: 15,
-    marginTop: 10,
-    marginBottom: 12,
+    marginTop: 20,
+    marginBottom: 20,
     borderRadius: 20,
     backgroundColor: COLORS.lightGray2,
     alignSelf: 'center',
@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   image: {
-    width: 90,
-    height: 90,
+    width: 100,
+    height: 100,
     borderRadius: 20,
     bottom: 10,
     alignSelf: 'center',
