@@ -105,7 +105,7 @@ const BookmarkedScreen = () => {
         <View
           style={{flex: 0.95, alignItems: 'center', justifyContent: 'center'}}>
           <Text style={{color: COLORS.white, fontSize: 30, fontWeight: 'bold'}}>
-            Bookmarked
+            Your Favorite
           </Text>
         </View>
       </View>
