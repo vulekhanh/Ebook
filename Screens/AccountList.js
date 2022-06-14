@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 //import {colors,theme} from '../constants';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { COLORS } from '../constants';
 //import AccountItem from './AccountItem'; 
 import AccountItem from './AccountItem'
 import { FirebaseManager } from './FirebaseManager';
@@ -155,7 +156,7 @@ function AccountList({ navigation }) {
                 </View>
                 :
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ color: "#black", fontSize : 18 }}>No data</Text>
+                    <Text style={{ color: COLORS.white, fontSize : 18 }}>Please borrow something</Text>
                 </View>
             )
         }

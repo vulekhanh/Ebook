@@ -101,6 +101,7 @@ const AccountSettingScreen = ({navigation}) => {
               <Text style={stylesmodal.title}>Your Password:</Text>
               <TextInput
                 style={stylesmodal.input}
+                secureTextEntry
                 onChangeText={value => setPass(value)}
                 placeholder={'Enter Your Password'}
                 placeholderTextColor={COLORS.lightGray}
@@ -108,6 +109,7 @@ const AccountSettingScreen = ({navigation}) => {
               <Text style={stylesmodal.title}>New Password:</Text>
               <TextInput
                 style={stylesmodal.input}
+                secureTextEntry
                 onChangeText={value => setNewPass(value)}
                 placeholder={'Enter New Password'}
                 placeholderTextColor={COLORS.lightGray}
@@ -115,6 +117,7 @@ const AccountSettingScreen = ({navigation}) => {
               <Text style={stylesmodal.title}>Confirm New Password:</Text>
               <TextInput
                 style={stylesmodal.input}
+                secureTextEntry
                 onChangeText={value => setCNewPass(value)}
                 placeholder={'Confirm New Password'}
                 placeholderTextColor={COLORS.lightGray}
@@ -227,7 +230,7 @@ const AccountSettingScreen = ({navigation}) => {
             <ButtonUser
               name="About Us"
               onPress={() => {
-                Alert.alert('blablabla');
+                Alert.alert('Ebook project by team 10 <3','ebook15062022@gmail.com');
               }}
             />
             <View

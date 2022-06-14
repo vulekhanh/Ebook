@@ -83,18 +83,18 @@ export class FirebaseManager extends Component {
         auth()
             .signInWithEmailAndPassword(mail, pass)
             .then(() => {
-                console.log("Sign in succesed");
+                console.log("Sign in successed!");
             })
             .catch(error => {
                 console.log(error)
                 if (error.code === 'auth/wrong-password') {
-                    Alert.alert("Library App ", "Sai mật khẩu");
+                    Alert.alert("Library App ", "Wrong Password");
                 }
                 if (error.code === 'auth/user-not-found') {
-                    Alert.alert("Library App ", "Mail sai hoặc chưa được đăng kí");
+                    Alert.alert("Library App ", "User not found");
                 }
                 if (error.code === "auth/invalid-email") {
-                    Alert.alert("Library App ", "Mail không đúng định dạng");
+                    Alert.alert("Library App ", "Invalid Email");
                 }
             });
     };
@@ -113,14 +113,14 @@ export class FirebaseManager extends Component {
                 this.pushData("Account", this.dataAccount);
                 this.pushData("Cart", this.dataCart);
                 this.pushData("Bookmarked", this.dataBookmarked);
-                Alert.alert("Library App", "Đăng kí thành công");
+                Alert.alert("Library App", "Successed!");
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    Alert.alert("Library App ", "Mail đã có người sử dụng");
+                    Alert.alert("Library App ", "Email has already used");
                 }
                 if (error.code === 'auth/invalid-email') {
-                    Alert.alert("Library App ", "Mail không hợp lệ");
+                    Alert.alert("Library App ", "Invalid Email");
                 }
             })
     }
@@ -130,7 +130,7 @@ export class FirebaseManager extends Component {
         const user = auth().currentUser;
         user.updatePassword(newPassword)
             .then(() => {
-                console.log("Update succesed");
+                console.log("Update successed!");
                 this.SignOut();
             })
             .catch(error => {
@@ -143,15 +143,15 @@ export class FirebaseManager extends Component {
     async ResetPass(mail) {
         await auth().sendPasswordResetEmail(mail)
             .then(() => {
-                Alert.alert("Library App ", "Vui lòng kiểm tra hòm thư");
+                Alert.alert("Library App ", "Please check your mail!");
             })
             .catch(error => {
                 console.log(error);
                 if (error.code === 'auth/user-not-found') {
-                    Alert.alert("Library App ", "Mail chưa đăng ký");
+                    Alert.alert("Library App ", "User not found!");
                 }
                 if (error.code === 'auth/invalid-email') {
-                    Alert.alert("Library App ", "Mail không hợp lệ");
+                    Alert.alert("Library App ", "Invalid Email");
                 }
             });
     }
@@ -164,7 +164,7 @@ export class FirebaseManager extends Component {
     }
     //Log out
     SignOut() {
-        auth().signOut().then(() => { console.log("Log out succesed") })
+        auth().signOut().then(() => { console.log("Log out successed!") })
     };
     //#endregion
 
@@ -273,7 +273,7 @@ export class FirebaseManager extends Component {
         await reference.putFile(imagePath).then(async(value)=>{
             var temp = await this.getImage(collection, imageName);
             this.sourceImage = temp;
-            console.log("Add Success!")
+            console.log("Successed!")
         });
     }
     async deleteImage(collection, imageName){

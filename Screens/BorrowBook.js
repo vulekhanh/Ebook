@@ -106,26 +106,25 @@ const BorrowBookScreen = ({ route, navigation }) => {
     );
   };
   const renderItem2 = ({ item }) => {
-    if (item.id < 4) {
-      if (item.id % 2 == 0) {
+    // if (item.id < 4) {
+    //   if (item.id % 2 == 0) {
         return (
           <View
             style={{ marginVertical: 10, flexDirection: 'row', marginLeft: 20 }}>
-            <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.id}</Text>
-            <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>. </Text>
+            <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>+  </Text>
             <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.bookName}</Text>
           </View>
         );
-      }
-      return (
-        <View
-          style={{ marginVertical: 10, flexDirection: 'row', marginLeft: 20 }}>
-          <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.id}</Text>
-          <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>. </Text>
-          <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.bookName}</Text>
-        </View>
-      );
-    }
+      // }
+      // return (
+      //   <View
+      //     style={{ marginVertical: 10, flexDirection: 'row', marginLeft: 20 }}>
+      //     <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.id}</Text>
+      //     <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>. </Text>
+      //     <Text style={{ color: COLORS.lightGray2, fontSize: 20 }}>{item.bookName}</Text>
+      //   </View>
+      // );
+
   };
   function renderHeader() {
     return (
@@ -239,7 +238,7 @@ const BorrowBookScreen = ({ route, navigation }) => {
         await manager.UpdateData("Account", dataUserAfter, ["email", "==", email])
       }
       setData([]);
-      Alert.alert("Library Manager", "Borrow successful");
+      Alert.alert("Library Manager", "Borrow successful!");
       setModalVisible(!modalVisible)
     }
   }

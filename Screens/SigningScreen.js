@@ -84,7 +84,7 @@ const SigningScreen = ({navigation}) => {
               await manager.signIn(mail,pass);
             }
             else{
-              Alert.alert("Library Manager", "Vui lòng kiểm tra lại thông tin");
+              Alert.alert("Library Manager", "Please check your Mail and Password!");
             }
           }}>
           <Text style={styles.buttonText}>Sign In</Text>
@@ -95,7 +95,7 @@ const SigningScreen = ({navigation}) => {
               manager.ResetPass(mail);
             }
             else{
-              Alert.alert("Library Manager", "Vui lòng nhập mail");
+              Alert.alert("Library Manager", "Please Enter Your Email!");
             }
           }}
         >
@@ -168,7 +168,7 @@ const SigningScreen = ({navigation}) => {
                 await manager.singUp(name,mail,pass);
               }
               else{
-                Alert.alert("Library Manager", "Vui lòng kiểm tra lại thông tin");
+                Alert.alert("Library Manager", "Please check your infor!");
               }
             }}
           >
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 20,
     color: '#FFFFFF',
     fontWeight: 'bold',
     textAlign: 'center',
@@ -250,7 +250,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     width: '90%',
     height: 40,
-    color : '#fff'
+    color : '#fff',
+    fontSize: 17,
   },
   inputContainer: {
     flexDirection: 'row',

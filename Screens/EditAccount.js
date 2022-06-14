@@ -147,7 +147,7 @@ const EditAccountScreen = ({ route, navigation }) => {
               textAlign: 'center',
             }}
             onChangeText = {value => dataUser.gender = value}
-            placeholder={'Gender'}
+            placeholder={'Gender (Male/Female)'}
             placeholderTextColor={COLORS.lightGray}
             selectionColor={COLORS.lightGray}>{dataUser.gender}</TextInput>
           <TextInput
