@@ -88,13 +88,13 @@ export class FirebaseManager extends Component {
             .catch(error => {
                 console.log(error)
                 if (error.code === 'auth/wrong-password') {
-                    Alert.alert("Health Trangking ", "Sai mật khẩu");
+                    Alert.alert("Library App ", "Sai mật khẩu");
                 }
                 if (error.code === 'auth/user-not-found') {
-                    Alert.alert("Health Trangking ", "Mail sai hoặc chưa được đăng kí");
+                    Alert.alert("Library App ", "Mail sai hoặc chưa được đăng kí");
                 }
                 if (error.code === "auth/invalid-email") {
-                    Alert.alert("Health Trangking ", "Mail không đúng định dạng");
+                    Alert.alert("Library App ", "Mail không đúng định dạng");
                 }
             });
     };
@@ -113,14 +113,14 @@ export class FirebaseManager extends Component {
                 this.pushData("Account", this.dataAccount);
                 this.pushData("Cart", this.dataCart);
                 this.pushData("Bookmarked", this.dataBookmarked);
-                Alert.alert("Health Trangking ", "Đăng kí thành công");
+                Alert.alert("Library App", "Đăng kí thành công");
             })
             .catch(error => {
                 if (error.code === 'auth/email-already-in-use') {
-                    Alert.alert("Health Trangking ", "Mail đã có người sử dụng");
+                    Alert.alert("Library App ", "Mail đã có người sử dụng");
                 }
                 if (error.code === 'auth/invalid-email') {
-                    Alert.alert("Health Trangking ", "Mail không hợp lệ");
+                    Alert.alert("Library App ", "Mail không hợp lệ");
                 }
             })
     }
@@ -137,20 +137,21 @@ export class FirebaseManager extends Component {
                 console.log(error)
             })
     }
+    
     // Reset password
 
     async ResetPass(mail) {
         await auth().sendPasswordResetEmail(mail)
             .then(() => {
-                Alert.alert("Health Trangking ", "Vui lòng kiểm tra hòm thư");
+                Alert.alert("Library App ", "Vui lòng kiểm tra hòm thư");
             })
             .catch(error => {
                 console.log(error);
                 if (error.code === 'auth/user-not-found') {
-                    Alert.alert("Health Trangking ", "Mail chưa đăng ký");
+                    Alert.alert("Library App ", "Mail chưa đăng ký");
                 }
                 if (error.code === 'auth/invalid-email') {
-                    Alert.alert("Health Trangking ", "Mail không hợp lệ");
+                    Alert.alert("Library App ", "Mail không hợp lệ");
                 }
             });
     }
