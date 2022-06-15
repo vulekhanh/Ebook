@@ -16,6 +16,7 @@ import ButtonUser from '../custom component/ButtonUser';
 import {useNavigation} from '@react-navigation/core';
 import {COLORS} from '../constants';
 import {FirebaseManager} from './FirebaseManager';
+import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -114,12 +115,12 @@ const AccountSettingScreen = ({navigation}) => {
                 placeholder={'Enter New Password'}
                 placeholderTextColor={COLORS.lightGray}
                 selectionColor={COLORS.lightGray}></TextInput>
-              <Text style={stylesmodal.title}>Confirm New Password:</Text>
+              <Text style={stylesmodal.title}>Re-Enter New Password:</Text>
               <TextInput
                 style={stylesmodal.input}
                 secureTextEntry
                 onChangeText={value => setCNewPass(value)}
-                placeholder={'Confirm New Password'}
+                placeholder={'Re-Enter New Password'}
                 placeholderTextColor={COLORS.lightGray}
                 selectionColor={COLORS.lightGray}></TextInput>
             </View>
@@ -138,25 +139,22 @@ const AccountSettingScreen = ({navigation}) => {
                 if (pass.length > 0) {
                   if (newPass.length > 0 && cnewPass.length > 0) {
                     if (cnewPass == newPass) {
-                      manager.ChangePassword(dataUser.email, pass, newPass);         
+                      manager.ChangePassword(dataUser.email, pass, newPass); 
                       setModalVisible(!modalVisible)
-                      Alert.alert('Library Manager',
-                      'Updated');
-                      navigation.replace('SigningScreen');
                     } else {
                       Alert.alert(
                         'Library Manager',
-                        'Mật khẩu mới không trùng khớp',
+                        "Password confirmation doesn't match.",
                       );
                     }
                   }
                   else {
                     Alert.alert(
                       'Library Manager',
-                      'Please Enter New Password')
+                      'Please Enter New Password.')
                   }
                 } else {
-                  Alert.alert('Library Manager', 'Please Check Your Password');
+                  Alert.alert('Library Manager', 'Please Check Your Password.');
                 }
               }}>
               <Text

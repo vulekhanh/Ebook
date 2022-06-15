@@ -132,6 +132,8 @@ export class FirebaseManager extends Component {
             .then(() => {
                 console.log("Update successed!");
                 this.SignOut();
+                Alert.alert('Library Manager',
+                'Updated'); 
             })
             .catch(error => {
                 console.log(error)
